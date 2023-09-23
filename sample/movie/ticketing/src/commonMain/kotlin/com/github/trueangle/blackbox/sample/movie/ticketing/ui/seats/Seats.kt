@@ -96,7 +96,7 @@ private class SeatsViewModel(private val io: SeatsIO, config: SeatsConfig) : Vie
     }
 
     private fun SeatsConfig.toCinemaState() = cinema.copy(
-        showTimes = cinema.showTimes.filter { it == showTime }
+        showTimes = cinema.showTimes.filter { it == showTime }.toPersistentList()
     )
 }
 

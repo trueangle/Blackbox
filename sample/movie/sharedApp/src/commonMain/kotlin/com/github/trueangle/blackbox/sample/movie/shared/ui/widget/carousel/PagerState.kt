@@ -1,6 +1,7 @@
 package com.github.trueangle.blackbox.sample.movie.shared.ui.widget.carousel
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,8 +12,7 @@ import kotlin.math.roundToInt
  * This is a modified version of:
  * https://gist.github.com/adamp/07d468f4bcfe632670f305ce3734f511
  */
-// I Added support for vertical direction as well.
-
+@Stable
 class PagerState(
     currentPage: Int = 0,
     minPage: Int = 0,

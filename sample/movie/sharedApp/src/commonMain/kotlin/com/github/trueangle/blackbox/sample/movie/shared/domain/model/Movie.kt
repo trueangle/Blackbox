@@ -1,5 +1,8 @@
 package com.github.trueangle.blackbox.sample.movie.shared.domain.model
 
+import androidx.compose.runtime.Stable
+
+@Stable
 data class Movie(
     val id: String,
     var title: String?,
@@ -21,6 +24,7 @@ data class Movie(
     var dominantRgb: Int = 0
 )
 
+@Stable
 data class MovieDetails(
     val adult: Boolean,
     val backdropPath: String?,

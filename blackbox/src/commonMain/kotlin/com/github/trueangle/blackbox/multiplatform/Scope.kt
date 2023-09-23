@@ -1,6 +1,7 @@
 package com.github.trueangle.blackbox.multiplatform
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import com.github.trueangle.blackbox.core.ViewScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,6 +48,7 @@ fun <T : Coordinator> rememberCoordinator(key: String, creator: () -> T): T = re
 }.coordinator as T
 
 // Predefined scopes
+@Stable
 abstract class ViewModel {
     protected val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 

@@ -13,6 +13,7 @@ import io.ktor.client.HttpClient
 @Immutable
 class TicketingDependencies(httpClient: HttpClient)
 
+@Immutable
 class TicketingFactory(private val dependencies: TicketingDependencies) {
     private val orderRepository by lazy { OrderRepositoryImpl() }
 

@@ -9,3 +9,19 @@ plugins {
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
+
+allprojects {
+    tasks.withType(org.jetbrains.kotlin.gradle.dsl.KotlinCompile::class.java).configureEach {
+        kotlinOptions {
+
+            val path = layout.buildDirectory.dir("compose_metrics").get().asFile.absolutePath
+
+            freeCompilerArgs += listOf(
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=$path",
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=$path",
+            )
+        }
+    }
+}

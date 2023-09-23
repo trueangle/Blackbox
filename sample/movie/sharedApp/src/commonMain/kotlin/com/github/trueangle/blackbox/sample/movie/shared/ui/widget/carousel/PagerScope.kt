@@ -1,8 +1,11 @@
 package com.github.trueangle.blackbox.sample.movie.shared.ui.widget.carousel
 
+import androidx.compose.runtime.Stable
+
 /**
  * Scope for [Pager] content.
  */
+@Stable
 class PagerScope(
     private val state: PagerState,
     val commingPage: Int
