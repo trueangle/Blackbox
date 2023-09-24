@@ -1,6 +1,5 @@
 package com.github.trueangle.blackbox.multiplatform
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import com.github.trueangle.blackbox.core.ViewScope
 import kotlinx.coroutines.CoroutineScope

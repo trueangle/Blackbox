@@ -6,6 +6,7 @@ import com.github.trueangle.blackbox.sample.movie.shared.ui.trending.TrendingIO
 import com.github.trueangle.blackbox.sample.movie.shared.ui.trending.TrendingOutput
 import com.github.trueangle.blackbox.core.RouteOptions
 import com.github.trueangle.blackbox.multiplatform.Coordinator
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -32,21 +33,36 @@ internal class HomeCoordinator(
         }.launchIn(coroutineScope)
     }
 
-    fun onBottomNavActionClick(route: HomeRoutes.BottomBar) {
-        when (route) {
+    fun onBottomNavActionClick(clickedTabRoute: HomeRoutes.BottomBar) {
+        when (clickedTabRoute) {
             HomeRoutes.BottomBar.Featured -> navigator.navigateTo(
                 HomeRoutes.BottomBar.Featured.RoutePattern,
-                RouteOptions(launchSingleTop = true)
+                RouteOptions(
+                    popUpTo = RouteOptions.PopUpTo(
+                        inclusive = true,
+                        route = HomeRoutes.BottomBar.Featured.RoutePattern
+                    )
+                )
             )
 
             HomeRoutes.BottomBar.Trending -> navigator.navigateTo(
                 HomeRoutes.BottomBar.Trending.RoutePattern,
-                RouteOptions(launchSingleTop = true)
+                RouteOptions(
+                    launchSingleTop = true,
+                    popUpTo = RouteOptions.PopUpTo(
+                        route = HomeRoutes.BottomBar.Featured.RoutePattern
+                    )
+                )
             )
 
             HomeRoutes.BottomBar.Orders -> navigator.navigateTo(
                 HomeRoutes.BottomBar.Orders.RoutePattern,
-                RouteOptions(launchSingleTop = true)
+                RouteOptions(
+                    launchSingleTop = true,
+                    popUpTo = RouteOptions.PopUpTo(
+                        HomeRoutes.BottomBar.Featured.RoutePattern
+                    )
+                )
             )
         }
     }
@@ -71,5 +87,4 @@ internal class HomeCoordinator(
             }
         }.launchIn(coroutineScope)
     }
-
 }

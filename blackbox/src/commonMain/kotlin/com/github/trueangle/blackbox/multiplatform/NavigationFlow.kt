@@ -5,14 +5,13 @@ import androidx.compose.ui.Modifier
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.RouteBuilder
 
-
 @Composable
-fun NavigationFlow(
+inline fun NavigationFlow(
     modifier: Modifier,
     coordinator: Coordinator,
     startDestination: String,
     persistNavState: Boolean = false,
-    builder: RouteBuilder.() -> Unit,
+    noinline builder: RouteBuilder.() -> Unit,
 ) {
     NavHost(
         modifier = modifier,

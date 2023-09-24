@@ -64,7 +64,6 @@ internal fun Home(modifier: Modifier, dependencies: HomeDependencies, homeIO: Ho
     }
 }
 
-
 @Composable
 private fun HomeBottomBar(coordinator: HomeCoordinator) {
     val route by coordinator.currentRoute.collectAsState(null)
@@ -74,7 +73,9 @@ private fun HomeBottomBar(coordinator: HomeCoordinator) {
             icon = { Icon(imageVector = Icons.Outlined.Home, contentDescription = null) },
             selected = route == HomeRoutes.BottomBar.Featured.RoutePattern,
             onClick = {
-                coordinator.onBottomNavActionClick(HomeRoutes.BottomBar.Featured)
+                if (route != HomeRoutes.BottomBar.Featured.RoutePattern) {
+                    coordinator.onBottomNavActionClick(HomeRoutes.BottomBar.Featured)
+                }
             },
             label = { Text(text = "Showing") },
         )
@@ -82,7 +83,9 @@ private fun HomeBottomBar(coordinator: HomeCoordinator) {
             icon = { Icon(imageVector = Icons.Outlined.Person, contentDescription = null) },
             selected = route == HomeRoutes.BottomBar.Trending.RoutePattern,
             onClick = {
-                coordinator.onBottomNavActionClick(HomeRoutes.BottomBar.Trending)
+                if (route != HomeRoutes.BottomBar.Trending.RoutePattern) {
+                    coordinator.onBottomNavActionClick(HomeRoutes.BottomBar.Trending)
+                }
             },
             label = { Text(text = "Trending") }
         )
@@ -90,7 +93,9 @@ private fun HomeBottomBar(coordinator: HomeCoordinator) {
             icon = { Icon(imageVector = Icons.Outlined.Add, contentDescription = null) },
             selected = route == HomeRoutes.BottomBar.Orders.RoutePattern,
             onClick = {
-                coordinator.onBottomNavActionClick(HomeRoutes.BottomBar.Orders)
+                if (route != HomeRoutes.BottomBar.Orders.RoutePattern) {
+                    coordinator.onBottomNavActionClick(HomeRoutes.BottomBar.Orders)
+                }
             },
             label = { Text(text = "Orders") }
         )
