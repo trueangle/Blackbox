@@ -73,7 +73,8 @@ private data class CinemaItem(
 
 @Composable
 fun CinemaList(modifier: Modifier, movieName: String, io: CinemaListIO) {
-    val viewModel = rememberViewModel(key = "CinemaListViewModelScope") {
+
+    val viewModel = rememberViewModel(CinemaListViewModel::class) {
         CinemaListViewModel(CinemaRepositoryImpl(), io)
     }
 
@@ -86,7 +87,7 @@ fun CinemaList(modifier: Modifier, movieName: String, io: CinemaListIO) {
         item { Heading("The list of available cinemas showing $movieName") }
         item { Spacer(Modifier.height(18.dp)) }
 
-        items(items) { cinemaItem ->
+        items(items, key = { it.cinema.id }) { cinemaItem ->
             CinemaRow(
                 modifier = Modifier.padding(bottom = 16.dp),
                 cinema = cinemaItem.cinema,

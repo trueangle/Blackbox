@@ -30,7 +30,7 @@ class AuthIO : IO<Nothing, AuthFlowOutput>()
 
 @Composable
 fun AuthFlow(modifier: Modifier, io: AuthIO) {
-    val coordinator = rememberCoordinator("AuthFlowCoordinator") { BasicCoordinator() }
+    val coordinator = rememberCoordinator(key = "AuthFlowCoordinator") { BasicCoordinator() }
     val coroutineScope = rememberCoroutineScope()
 
     NavigationFlow(

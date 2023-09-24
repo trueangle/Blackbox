@@ -33,7 +33,7 @@ fun <T : ViewScope> rememberScope(
 
     // cannot use reified T::class name as a key on iOS, use explicit kClass param to workaround this
     // https://github.com/JetBrains/compose-multiplatform/issues/3147
-    val scopeKey = checkNotNull(kClass?.qualifiedName ?: key) {
+    val scopeKey = checkNotNull(key ?: kClass?.qualifiedName) {
         "You must specify either class or key to uniquely identify the scope"
     }
 
@@ -45,13 +45,32 @@ fun <T : ViewScope> rememberScope(
 }
 
 @Composable
-inline fun <T : Coordinator> rememberCoordinator(key: String, crossinline creator: () -> T): T =
-    rememberScope(key = key) {
+inline fun <T : Coordinator> rememberCoordinator(
+    kClass: KClass<T>? = null,
+    key: String? = null,
+    crossinline creator: () -> T
+): T {
+    val scopeKey = checkNotNull(key ?: kClass?.qualifiedName) {
+        "You must specify either class or key to uniquely identify the Coordinator"
+    }
+
+    return rememberScope(key = scopeKey) {
         FlowScope().apply { coordinator { creator() } }
     }.coordinator as T
+}
 
 @Composable
-inline fun <T : ViewModel> rememberViewModel(key: String, crossinline creator: () -> T): T =
-    rememberScope(key = key) {
+inline fun <T : ViewModel> rememberViewModel(
+    kClass: KClass<T>? = null,
+    key: String? = null,
+    crossinline creator: () -> T
+): T {
+
+    val scopeKey = checkNotNull(key ?: kClass?.qualifiedName) {
+        "You must specify either class or key to uniquely identify the ViewModel"
+    }
+
+    return rememberScope(key = "ViewModelScope$scopeKey") {
         ViewModelScope { creator() }
     }.viewModel
+}
