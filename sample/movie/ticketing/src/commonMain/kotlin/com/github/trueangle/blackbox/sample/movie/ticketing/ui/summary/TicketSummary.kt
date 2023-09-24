@@ -27,6 +27,7 @@ import com.github.trueangle.blackbox.core.IO
 import com.github.trueangle.blackbox.multiplatform.ViewModel
 import com.github.trueangle.blackbox.multiplatform.ViewModelScope
 import com.github.trueangle.blackbox.multiplatform.rememberScope
+import com.github.trueangle.blackbox.multiplatform.rememberViewModel
 import com.github.trueangle.blackbox.sample.movie.core.domain.model.User
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.model.Cinema
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.model.Order
@@ -120,9 +121,9 @@ fun TicketSummary(
     config: TicketSummaryConfig
 ) {
 
-    val viewModel = rememberScope("TicketSummaryViewModelScope") {
-        ViewModelScope { TicketSummaryViewModel(io, config, dependencies.orderRepository) }
-    }.viewModel as TicketSummaryViewModel
+    val viewModel = rememberViewModel(key = "TicketSummaryViewModelScope") {
+        TicketSummaryViewModel(io, config, dependencies.orderRepository)
+    }
 
     val state by viewModel.state.collectAsState()
 

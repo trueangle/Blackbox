@@ -56,6 +56,7 @@ data class RouteOptions(
 @OptIn(ExperimentalStdlibApi::class)
 @Immutable
 abstract class ViewScope : AutoCloseable {
+
     open fun onDestroy() {}
 
     override fun close() {

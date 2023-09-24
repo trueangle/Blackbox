@@ -28,6 +28,7 @@ import com.github.truangle.blackbox.design.typography
 import com.github.trueangle.blackbox.multiplatform.ViewModel
 import com.github.trueangle.blackbox.multiplatform.ViewModelScope
 import com.github.trueangle.blackbox.multiplatform.rememberScope
+import com.github.trueangle.blackbox.multiplatform.rememberViewModel
 import com.github.trueangle.blackbox.sample.movie.design.TopAppBar
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.model.Order
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.repository.OrderRepository
@@ -41,11 +42,9 @@ private class OrdersViewModel(private val orderRepository: OrderRepository) : Vi
 
 @Composable
 fun Orders(modifier: Modifier, dependencies: OrdersDependencies) {
-    val viewModel = rememberScope("OrdersScope") {
-        ViewModelScope {
-            OrdersViewModel(orderRepository = dependencies.repository)
-        }
-    }.viewModel as OrdersViewModel
+    val viewModel = rememberViewModel(key = "OrdersViewModel") {
+        OrdersViewModel(orderRepository = dependencies.repository)
+    }
 
     val orders by viewModel.orders.collectAsState()
 

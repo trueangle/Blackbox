@@ -20,6 +20,7 @@ import com.github.trueangle.blackbox.core.IO
 import com.github.trueangle.blackbox.multiplatform.ViewModel
 import com.github.trueangle.blackbox.multiplatform.ViewModelScope
 import com.github.trueangle.blackbox.multiplatform.rememberScope
+import com.github.trueangle.blackbox.multiplatform.rememberViewModel
 import com.github.trueangle.blackbox.sample.movie.shared.domain.model.Genre
 import com.github.trueangle.blackbox.sample.movie.shared.domain.model.Movie
 import com.github.trueangle.blackbox.sample.movie.shared.domain.repository.GenreRepository
@@ -112,15 +113,13 @@ fun Featured(
     dependencies: FeaturedDependencies,
     io: FeaturedIO
 ) {
-    val viewModel = rememberScope("MoviesPagerScope") {
-        ViewModelScope {
-            FeaturedViewModel(
-                repository = dependencies.movieRepository,
-                genreRepository = dependencies.genreRepository,
-                io = io
-            )
-        }
-    }.viewModel as FeaturedViewModel
+    val viewModel = rememberViewModel(key = "FeaturedScope") {
+        FeaturedViewModel(
+            repository = dependencies.movieRepository,
+            genreRepository = dependencies.genreRepository,
+            io = io
+        )
+    }
 
     val state by viewModel.screenState.collectAsState()
 

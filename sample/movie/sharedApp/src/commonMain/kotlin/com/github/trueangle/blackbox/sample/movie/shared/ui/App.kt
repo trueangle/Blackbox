@@ -3,7 +3,7 @@ package com.github.trueangle.blackbox.sample.movie.shared.ui
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.github.truangle.blackbox.movieapp.ui.detail.MovieDetails
+import com.github.trueangle.blackbox.sample.movie.shared.ui.detail.MovieDetails
 import com.github.trueangle.blackbox.sample.movie.shared.ui.home.Home
 import com.github.trueangle.blackbox.sample.movie.shared.ui.home.HomeIO
 import com.github.trueangle.blackbox.sample.movie.shared.ui.home.HomeInput
@@ -48,7 +48,7 @@ sealed interface AppRoutes {
 
 @Composable
 fun App(appDependencies: AppDependencies) {
-    val appScope = rememberScope("AppScope") { AppScope(appDependencies) }
+    val appScope = rememberScope(AppScope::class) { AppScope(appDependencies) }
 
     MovieAppTheme {
         NavigationFlow(
@@ -90,7 +90,7 @@ fun App(appDependencies: AppDependencies) {
     }
 }
 
-// Temporary abstraction level until proper Modal Window navigation is supported by nav library which in turn
+// Temporary navigation top-level until proper Modal Window navigation is supported by nav library which in turn
 // waits for Compose Multiplatform modal window insets support to be released
 class AppCoordinator(
     private val homeIO: HomeIO,

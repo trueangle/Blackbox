@@ -1,4 +1,4 @@
-package com.github.truangle.blackbox.movieapp.ui.detail
+package com.github.trueangle.blackbox.sample.movie.shared.ui.detail
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
@@ -130,13 +130,12 @@ internal fun MovieDetails(
   }
 */
 
-    val viewModel = rememberScope("MovieDetailsScope") {
-        createScope(movieId, dependencies)
-    }.viewModel as MovieDetailsViewModel
+    val scope =
+        rememberScope(key = "MovieDetailsScope") { createScope(movieId, dependencies) }
 
     val expand = remember { mutableStateOf(false) }
 
-    val state by viewModel.state.collectAsState()
+    val state by scope.viewModel.state.collectAsState()
     val details = state.details
     val similarMovies = state.similarMovies
 
@@ -146,7 +145,7 @@ internal fun MovieDetails(
             .padding(
                 animateDpAsState(
                     if (expand.value) 0.dp else 120.dp,
-                    tween(350)
+                    tween(250)
                 ).value
             )
     ) {
@@ -242,7 +241,12 @@ internal fun MovieDetails(
 
 @Composable
 internal fun SimilarMoviesSection(similarMovies: ImmutableList<Movie>) {
-    Text(text = "Similar Movies", style = typography.titleLarge, modifier = Modifier.padding(8.dp), color = Color.Gray)
+    Text(
+        text = "Similar Movies",
+        style = typography.titleLarge,
+        modifier = Modifier.padding(8.dp),
+        color = Color.Gray
+    )
     LazyRow {
         items(
             items = similarMovies,

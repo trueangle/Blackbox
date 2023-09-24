@@ -29,9 +29,7 @@ internal sealed interface HomeRoutes {
 
 @Composable
 internal fun Home(modifier: Modifier, dependencies: HomeDependencies, homeIO: HomeIO) {
-    val homeScope = rememberScope("HomeScope") {
-        HomeScope(dependencies, homeIO)
-    }
+    val homeScope = rememberScope(HomeScope::class) { HomeScope(dependencies, homeIO) }
 
     Scaffold(
         modifier = modifier,

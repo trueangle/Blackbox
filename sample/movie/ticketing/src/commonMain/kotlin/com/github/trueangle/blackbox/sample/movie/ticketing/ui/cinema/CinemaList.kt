@@ -32,6 +32,7 @@ import com.github.trueangle.blackbox.core.IO
 import com.github.trueangle.blackbox.multiplatform.ViewModel
 import com.github.trueangle.blackbox.multiplatform.ViewModelScope
 import com.github.trueangle.blackbox.multiplatform.rememberScope
+import com.github.trueangle.blackbox.multiplatform.rememberViewModel
 import com.github.trueangle.blackbox.sample.movie.ticketing.common.Heading
 import com.github.trueangle.blackbox.sample.movie.ticketing.data.repository.CinemaRepositoryImpl
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.model.Cinema
@@ -72,11 +73,9 @@ private data class CinemaItem(
 
 @Composable
 fun CinemaList(modifier: Modifier, movieName: String, io: CinemaListIO) {
-    val viewModel = rememberScope("CinemaListViewModelScope") {
-        ViewModelScope {
-            CinemaListViewModel(CinemaRepositoryImpl(), io)
-        }
-    }.viewModel as CinemaListViewModel
+    val viewModel = rememberViewModel(key = "CinemaListViewModelScope") {
+        CinemaListViewModel(CinemaRepositoryImpl(), io)
+    }
 
     val items by viewModel.cinemaItems
 

@@ -30,6 +30,7 @@ import com.github.trueangle.blackbox.core.IO
 import com.github.trueangle.blackbox.multiplatform.ViewModel
 import com.github.trueangle.blackbox.multiplatform.ViewModelScope
 import com.github.trueangle.blackbox.multiplatform.rememberScope
+import com.github.trueangle.blackbox.multiplatform.rememberViewModel
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.model.Cinema
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.model.Seat
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.model.ShowTime
@@ -103,9 +104,9 @@ private class SeatsViewModel(private val io: SeatsIO, config: SeatsConfig) : Vie
 @Composable
 fun Seats(modifier: Modifier, io: SeatsIO, config: SeatsConfig) {
 
-    val viewModel = rememberScope("CinemaListViewModelScope") {
-        ViewModelScope { SeatsViewModel(io, config) }
-    }.viewModel as SeatsViewModel
+    val viewModel = rememberViewModel(key = "CinemaListViewModelScope") {
+        SeatsViewModel(io, config)
+    }
 
     val seats by viewModel.seats.collectAsState()
     val buttonEnabled by viewModel.buttonEnabled.collectAsState(false)

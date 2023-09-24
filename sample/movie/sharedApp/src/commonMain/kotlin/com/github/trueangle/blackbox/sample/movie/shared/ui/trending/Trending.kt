@@ -15,6 +15,7 @@ import com.github.trueangle.blackbox.core.IO
 import com.github.trueangle.blackbox.multiplatform.ViewModel
 import com.github.trueangle.blackbox.multiplatform.ViewModelScope
 import com.github.trueangle.blackbox.multiplatform.rememberScope
+import com.github.trueangle.blackbox.multiplatform.rememberViewModel
 import com.github.trueangle.blackbox.sample.movie.design.TopAppBar
 import com.github.trueangle.blackbox.sample.movie.shared.domain.model.Movie
 import com.github.trueangle.blackbox.sample.movie.shared.domain.repository.MovieRepository
@@ -92,9 +93,9 @@ private class TrendingViewModel(
 @Composable
 fun Trending(modifier: Modifier, dependencies: TrendingDependencies, trendingIO: TrendingIO) {
 
-    val viewModel = rememberScope("TrendingScope") {
-        ViewModelScope { TrendingViewModel(dependencies.repository, trendingIO) }
-    }.viewModel as TrendingViewModel
+    val viewModel = rememberViewModel(key = "TrendingViewModel") {
+        TrendingViewModel(dependencies.repository, trendingIO)
+    }
 
     val listOfSections = listOf(
         "Trending this week",

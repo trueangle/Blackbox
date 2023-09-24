@@ -1,7 +1,7 @@
 package com.github.trueangle.blackbox.sample.movie.shared.ui
 
 import androidx.compose.runtime.Immutable
-import com.github.truangle.blackbox.movieapp.ui.detail.MovieDetailsDependencies
+import com.github.trueangle.blackbox.sample.movie.shared.ui.detail.MovieDetailsDependencies
 import com.github.trueangle.blackbox.sample.movie.shared.ui.home.HomeDependencies
 import com.github.trueangle.blackbox.sample.movie.shared.ui.home.HomeIO
 import com.github.trueangle.blackbox.multiplatform.FlowScope

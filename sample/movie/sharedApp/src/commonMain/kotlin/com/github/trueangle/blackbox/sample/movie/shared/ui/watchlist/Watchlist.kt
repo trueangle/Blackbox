@@ -19,6 +19,7 @@ import com.github.truangle.blackbox.design.typography
 import com.github.trueangle.blackbox.multiplatform.ViewModel
 import com.github.trueangle.blackbox.multiplatform.ViewModelScope
 import com.github.trueangle.blackbox.multiplatform.rememberScope
+import com.github.trueangle.blackbox.multiplatform.rememberViewModel
 import com.github.trueangle.blackbox.sample.movie.design.horizontalGradientBackground
 import com.github.trueangle.blackbox.sample.movie.design.moviesSurfaceGradient
 import com.github.trueangle.blackbox.sample.movie.shared.domain.model.Movie
@@ -46,9 +47,9 @@ class WatchlistDependencies(val repository: MovieRepository)
 fun Watchlist(modifier: Modifier, dependencies: WatchlistDependencies) {
     val surfaceGradient = moviesSurfaceGradient(isSystemInDarkTheme())
 
-    val viewModel = rememberScope("WatchlistPagerScope") {
-        ViewModelScope { WatchlistViewModel(dependencies.repository) }
-    }.viewModel as WatchlistViewModel
+    val viewModel = rememberViewModel(key = "WatchlistViewModel") {
+        WatchlistViewModel(dependencies.repository)
+    }
 
     val myWatchlist by viewModel.watchlist.collectAsState()
 

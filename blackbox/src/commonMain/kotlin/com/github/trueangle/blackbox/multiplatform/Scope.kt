@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import moe.tlaster.precompose.stateholder.LocalStateHolder
+import kotlin.reflect.KClass
 
 open class FlowScope : ViewScope() {
     private var _coordinator: Coordinator? = null
@@ -23,48 +24,34 @@ open class FlowScope : ViewScope() {
     }
 }
 
-// todo make a generic rememberScope for storing Any data
-// cannot use T::class
-// https://github.com/JetBrains/compose-multiplatform/issues/3147
 @Composable
 fun <T : ViewScope> rememberScope(
-    key: String, // todo think of unique key for each scope class
+    kClass: KClass<T>? = null,
+    key: String? = null,
     scopeCreator: () -> T
 ): T {
 
-    // todo proper error description
-    val stateHolder = checkNotNull(LocalStateHolder.current) {
-        "Require LocalStateHolder not null"
+    // cannot use reified T::class name as a key on iOS, use explicit kClass param to workaround this
+    // https://github.com/JetBrains/compose-multiplatform/issues/3147
+    val scopeKey = checkNotNull(kClass?.qualifiedName ?: key) {
+        "You must specify either class or key to uniquely identify the scope"
     }
 
-    return stateHolder.getOrPut(key) {
+    val stateHolder = checkNotNull(LocalStateHolder.current) { "LocalStateHolder must not be null" }
+
+    return stateHolder.getOrPut(scopeKey) {
         scopeCreator()
     }
 }
 
 @Composable
-fun <T : Coordinator> rememberCoordinator(key: String, creator: () -> T): T = rememberScope(key) {
-    FlowScope().apply { coordinator { creator() } }
-}.coordinator as T
+inline fun <T : Coordinator> rememberCoordinator(key: String, crossinline creator: () -> T): T =
+    rememberScope(key = key) {
+        FlowScope().apply { coordinator { creator() } }
+    }.coordinator as T
 
-// Predefined scopes
-@Stable
-abstract class ViewModel {
-    protected val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
-
-    open fun onDestroy() {
-        coroutineScope.cancel()
-    }
-}
-
-class ViewModelScope(val onCreate: () -> ViewModel) : ViewScope() {
-
-    private val _viewModel = lazy { onCreate() }
-    val viewModel by _viewModel
-
-    override fun onDestroy() {
-        if (_viewModel.isInitialized()) {
-            viewModel.onDestroy()
-        }
-    }
-}
+@Composable
+inline fun <T : ViewModel> rememberViewModel(key: String, crossinline creator: () -> T): T =
+    rememberScope(key = key) {
+        ViewModelScope { creator() }
+    }.viewModel
