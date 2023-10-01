@@ -2,12 +2,8 @@ package com.github.trueangle.blackbox.sample.movie.shared.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import com.github.trueangle.blackbox.sample.movie.shared.ui.detail.MovieDetails
-import com.github.trueangle.blackbox.sample.movie.shared.ui.home.Home
-import com.github.trueangle.blackbox.sample.movie.shared.ui.home.HomeIO
-import com.github.trueangle.blackbox.sample.movie.shared.ui.home.HomeInput
-import com.github.trueangle.blackbox.sample.movie.shared.ui.home.HomeOutput
 import com.github.trueangle.blackbox.multiplatform.Coordinator
 import com.github.trueangle.blackbox.multiplatform.NavigationFlow
 import com.github.trueangle.blackbox.multiplatform.rememberScope
@@ -16,6 +12,11 @@ import com.github.trueangle.blackbox.sample.movie.auth.AuthFlowOutput
 import com.github.trueangle.blackbox.sample.movie.auth.AuthIO
 import com.github.trueangle.blackbox.sample.movie.design.MovieAppTheme
 import com.github.trueangle.blackbox.sample.movie.shared.domain.model.Movie
+import com.github.trueangle.blackbox.sample.movie.shared.ui.detail.MovieDetails
+import com.github.trueangle.blackbox.sample.movie.shared.ui.home.Home
+import com.github.trueangle.blackbox.sample.movie.shared.ui.home.HomeIO
+import com.github.trueangle.blackbox.sample.movie.shared.ui.home.HomeInput
+import com.github.trueangle.blackbox.sample.movie.shared.ui.home.HomeOutput
 import com.github.trueangle.blackbox.sample.movie.ticketing.TicketingFlowIO
 import com.github.trueangle.blackbox.sample.movie.ticketing.TicketingFlowInput
 import com.github.trueangle.blackbox.sample.movie.ticketing.TicketingFlowOutput
@@ -46,6 +47,7 @@ sealed interface AppRoutes {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun App(appDependencies: AppDependencies) {
     val appScope = rememberScope(AppScope::class) { AppScope(appDependencies) }

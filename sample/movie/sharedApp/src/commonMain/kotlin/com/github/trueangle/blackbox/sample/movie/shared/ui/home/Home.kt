@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import com.github.trueangle.blackbox.multiplatform.NavigationFlow
 import com.github.trueangle.blackbox.multiplatform.rememberScope
@@ -27,6 +28,7 @@ internal sealed interface HomeRoutes {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun Home(modifier: Modifier, dependencies: HomeDependencies, homeIO: HomeIO) {
     val homeScope = rememberScope(HomeScope::class) { HomeScope(dependencies, homeIO) }

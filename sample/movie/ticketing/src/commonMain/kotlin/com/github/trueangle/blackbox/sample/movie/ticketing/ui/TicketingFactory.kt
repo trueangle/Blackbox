@@ -10,6 +10,10 @@ import com.github.trueangle.blackbox.sample.movie.ticketing.ui.orders.Orders
 import com.github.trueangle.blackbox.sample.movie.ticketing.ui.orders.OrdersDependencies
 import io.ktor.client.HttpClient
 
+// todo
+@Immutable
+class TicketingConfig(movieName: String)
+
 @Immutable
 class TicketingDependencies(httpClient: HttpClient)
 
