@@ -47,7 +47,7 @@ class WatchlistDependencies(val repository: MovieRepository)
 fun Watchlist(modifier: Modifier, dependencies: WatchlistDependencies) {
     val surfaceGradient = moviesSurfaceGradient(isSystemInDarkTheme())
 
-    val viewModel = rememberViewModel(WatchlistViewModel::class) {
+    val viewModel = rememberViewModel {
         WatchlistViewModel(dependencies.repository)
     }
 

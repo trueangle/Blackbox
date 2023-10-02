@@ -113,7 +113,7 @@ fun Featured(
     dependencies: FeaturedDependencies,
     io: FeaturedIO
 ) {
-    val viewModel = rememberViewModel(FeaturedViewModel::class) {
+    val viewModel = rememberViewModel {
         FeaturedViewModel(
             repository = dependencies.movieRepository,
             genreRepository = dependencies.genreRepository,

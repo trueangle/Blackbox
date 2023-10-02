@@ -104,7 +104,7 @@ private class SeatsViewModel(private val io: SeatsIO, config: SeatsConfig) : Vie
 @Composable
 fun Seats(modifier: Modifier, io: SeatsIO, config: SeatsConfig) {
 
-    val viewModel = rememberViewModel(SeatsViewModel::class) {
+    val viewModel = rememberViewModel {
         SeatsViewModel(io, config)
     }
 

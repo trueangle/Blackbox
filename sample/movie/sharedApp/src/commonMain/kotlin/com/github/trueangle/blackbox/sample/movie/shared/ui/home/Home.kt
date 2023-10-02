@@ -28,10 +28,9 @@ internal sealed interface HomeRoutes {
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun Home(modifier: Modifier, dependencies: HomeDependencies, homeIO: HomeIO) {
-    val homeScope = rememberScope(HomeScope::class) { HomeScope(dependencies, homeIO) }
+    val homeScope = rememberScope { HomeScope(dependencies, homeIO) }
 
     Scaffold(
         modifier = modifier,

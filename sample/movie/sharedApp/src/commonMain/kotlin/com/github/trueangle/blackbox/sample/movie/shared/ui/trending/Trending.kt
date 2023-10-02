@@ -93,7 +93,7 @@ private class TrendingViewModel(
 @Composable
 fun Trending(modifier: Modifier, dependencies: TrendingDependencies, trendingIO: TrendingIO) {
 
-    val viewModel = rememberViewModel(TrendingViewModel::class) {
+    val viewModel = rememberViewModel {
         TrendingViewModel(dependencies.repository, trendingIO)
     }
 

@@ -25,16 +25,13 @@ open class FlowScope : ViewScope() {
 }
 
 @Composable
-fun <T : ViewScope> rememberScope(
-    kClass: KClass<T>? = null,
+inline fun <reified T : ViewScope> rememberScope(
     key: String? = null,
-    scopeCreator: () -> T
+    crossinline scopeCreator: () -> T
 ): T {
-
-    // cannot use reified T::class name as a key on iOS, use explicit kClass param to workaround this
-    // https://github.com/JetBrains/compose-multiplatform/issues/3147
-    val scopeKey = checkNotNull(key ?: kClass?.qualifiedName) {
-        "You must specify either class or key to uniquely identify the scope"
+    val kClass = getKClassForGenericType<T>()
+    val scopeKey = checkNotNull(key ?: kClass.qualifiedName) {
+        "It is impossible to use anonymous object name as a key, please specify the key param explicitly"
     }
 
     val stateHolder = checkNotNull(LocalStateHolder.current) { "LocalStateHolder must not be null" }
@@ -45,13 +42,13 @@ fun <T : ViewScope> rememberScope(
 }
 
 @Composable
-inline fun <T : Coordinator> rememberCoordinator(
-    kClass: KClass<T>? = null,
+inline fun <reified T : Coordinator> rememberCoordinator(
     key: String? = null,
     crossinline creator: () -> T
 ): T {
-    val scopeKey = checkNotNull(key ?: kClass?.qualifiedName) {
-        "You must specify either class or key to uniquely identify the Coordinator"
+    val kClass = getKClassForGenericType<T>()
+    val scopeKey = checkNotNull(key ?: kClass.qualifiedName) {
+        "It is impossible to use anonymous object name as a key, please specify the key param explicitly"
     }
 
     return rememberScope(key = scopeKey) {
@@ -60,17 +57,22 @@ inline fun <T : Coordinator> rememberCoordinator(
 }
 
 @Composable
-inline fun <T : ViewModel> rememberViewModel(
-    kClass: KClass<T>? = null,
+inline fun <reified T : ViewModel> rememberViewModel(
     key: String? = null,
     crossinline creator: () -> T
 ): T {
 
-    val scopeKey = checkNotNull(key ?: kClass?.qualifiedName) {
-        "You must specify either class or key to uniquely identify the ViewModel"
+    val kClass = getKClassForGenericType<T>()
+    val scopeKey = checkNotNull(key ?: kClass.qualifiedName) {
+        "It is impossible to use anonymous object name as a key, please specify the key param explicitly"
     }
 
     return rememberScope(key = "ViewModelScope$scopeKey") {
         ViewModelScope { creator() }
     }.viewModel
 }
+
+// workaround method for getting reified type of @Composable fun
+// https://github.com/JetBrains/compose-multiplatform/issues/3147
+@PublishedApi
+internal inline fun <reified T : Any> getKClassForGenericType(): KClass<T> = T::class

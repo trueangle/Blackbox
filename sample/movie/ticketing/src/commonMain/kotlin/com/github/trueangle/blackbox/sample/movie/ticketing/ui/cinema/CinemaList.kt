@@ -74,7 +74,7 @@ private data class CinemaItem(
 @Composable
 fun CinemaList(modifier: Modifier, movieName: String, io: CinemaListIO) {
 
-    val viewModel = rememberViewModel(CinemaListViewModel::class) {
+    val viewModel = rememberViewModel {
         CinemaListViewModel(CinemaRepositoryImpl(), io)
     }
 

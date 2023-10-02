@@ -47,10 +47,9 @@ sealed interface AppRoutes {
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun App(appDependencies: AppDependencies) {
-    val appScope = rememberScope(AppScope::class) { AppScope(appDependencies) }
+    val appScope = rememberScope { AppScope(appDependencies) }
 
     MovieAppTheme {
         NavigationFlow(

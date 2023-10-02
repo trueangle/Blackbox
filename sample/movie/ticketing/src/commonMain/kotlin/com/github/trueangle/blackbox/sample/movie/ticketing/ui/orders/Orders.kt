@@ -42,7 +42,7 @@ private class OrdersViewModel(private val orderRepository: OrderRepository) : Vi
 
 @Composable
 fun Orders(modifier: Modifier, dependencies: OrdersDependencies) {
-    val viewModel = rememberViewModel(OrdersViewModel::class) {
+    val viewModel = rememberViewModel {
         OrdersViewModel(orderRepository = dependencies.repository)
     }
 

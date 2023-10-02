@@ -121,7 +121,7 @@ fun TicketSummary(
     config: TicketSummaryConfig
 ) {
 
-    val viewModel = rememberViewModel(TicketSummaryViewModel::class) {
+    val viewModel = rememberViewModel {
         TicketSummaryViewModel(io, config, dependencies.orderRepository)
     }
 

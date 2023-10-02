@@ -63,7 +63,7 @@ internal fun TicketingFlow(
     movieName: String
 ) {
     val scope =
-        rememberScope(TicketingFlowScope::class) { TicketingFlowScope(movieName, dependencies, io) }
+        rememberScope { TicketingFlowScope(movieName, dependencies, io) }
 
     val coordinator = scope.coordinator as TicketingFlowCoordinator
     val currentRoute by scope.coordinator.currentRoute.collectAsState(FLOW_STEPS.first())
