@@ -1,29 +1,27 @@
 package com.github.trueangle.blackbox.sample.movie.shared.ui.featured
 
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.CardDefaults.cardElevation
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -44,7 +42,6 @@ fun MoviePagerItem(
     genres: List<Genre>,
     isSelected: Boolean,
     offset: Float,
-    addToWatchList: () -> Unit,
     openMovieDetail: (Movie) -> Unit,
     onBuyTicketClick: (Movie) -> Unit
 ) {
@@ -61,8 +58,8 @@ fun MoviePagerItem(
         offset = offset
     ).dp
     val animateElevation = getOffsetBasedValue(
-        selectedValue = 12,
-        nonSelectedValue = 2,
+        selectedValue = 6,
+        nonSelectedValue = 6,
         isSelected = isSelected,
         offset = offset
     ).dp
@@ -88,8 +85,8 @@ fun MoviePagerItem(
             },
         shape = RoundedCornerShape(16.dp),
         colors = cardColors(
-            containerColor = MaterialTheme.colorScheme.onBackground,
-            contentColor = MaterialTheme.colorScheme.background,
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
         )
     ) {
         Column {
@@ -106,28 +103,11 @@ fun MoviePagerItem(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                val clicked = remember { mutableStateOf(false) }
                 Text(
                     text = movie.title.orEmpty(),
                     modifier = Modifier.padding(8.dp),
                     style = typography.titleLarge
                 )
-                IconButton(onClick = {
-                    addToWatchList.invoke()
-                    clicked.value = !clicked.value
-                }) {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        tint = MaterialTheme.colorScheme.primary,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .graphicsLayer(
-                                rotationY = animateFloatAsState(
-                                    if (clicked.value) 720f else 0f, tween(400)
-                                ).value
-                            )
-                    )
-                }
             }
             Row {
                 movieGenres?.forEach {

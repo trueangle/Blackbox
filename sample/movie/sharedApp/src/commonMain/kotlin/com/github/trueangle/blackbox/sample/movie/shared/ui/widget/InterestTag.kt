@@ -16,44 +16,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
-@Stable
-interface TagColors {
-    @Composable
-    fun backgroundColor(enabled: Boolean): State<Color>
-
-    @Composable
-    fun contentColor(enabled: Boolean): State<Color>
-}
-
-@Immutable
-private class DefaultTagColors(
-    private val backgroundColor: Color,
-    private val contentColor: Color
-) : TagColors {
-    @Composable
-    override fun backgroundColor(enabled: Boolean): State<Color> {
-        return rememberUpdatedState(newValue = backgroundColor)
-    }
-
-    @Composable
-    override fun contentColor(enabled: Boolean): State<Color> {
-        return rememberUpdatedState(newValue = contentColor)
-    }
-}
-
-object TagDefaults {
-    @Composable
-    fun tagColors(
-        backgroundColor: Color = MaterialTheme.colorScheme.surface.copy(alpha = .2f),
-        contentColor: Color = MaterialTheme.colorScheme.primary
-    ): TagColors = DefaultTagColors(backgroundColor = backgroundColor, contentColor = contentColor)
-}
-
 @Composable
 fun InterestTag(
     text: String,
     modifier: Modifier = Modifier,
-    colors: TagColors = TagDefaults.tagColors(),
     shape: Shape = RoundedCornerShape(4.dp),
     style: TextStyle = typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
     onClick: () -> Unit = {}
@@ -62,11 +28,11 @@ fun InterestTag(
         .padding(4.dp)
         .clickable(onClick = onClick)
         .clip(shape = shape)
-        .background(colors.backgroundColor(enabled = true).value)
+        .background(MaterialTheme.colorScheme.tertiaryContainer)
         .padding(horizontal = 8.dp, vertical = 4.dp)
     Text(
         text = text,
-        color = colors.contentColor(enabled = true).value,
+        color = MaterialTheme.colorScheme.onTertiaryContainer,
         modifier = tagModifier,
         style = style
     )

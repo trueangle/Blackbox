@@ -30,6 +30,7 @@ kotlin {
         val ktorVersion = "2.3.3"
         val mediaKamelVersion = "0.7.2"
         val immutableCollectionsVersion = "0.3.5"
+        val kmpPalette = "2.0.1"
 
         val commonMain by getting {
             dependencies {
@@ -50,6 +51,9 @@ kotlin {
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("io.ktor:ktor-client-logging:$ktorVersion")
+
+                implementation("com.kmpalette:kmpalette-core:$kmpPalette")
+                implementation("com.kmpalette:extensions-network:$kmpPalette")
 
                 api("org.jetbrains.kotlinx:kotlinx-collections-immutable:$immutableCollectionsVersion")
 

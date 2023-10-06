@@ -91,8 +91,6 @@ fun App(appDependencies: AppDependencies) {
     }
 }
 
-// Temporary navigation top-level until proper Modal Window navigation is supported by nav library which in turn
-// waits for Compose Multiplatform modal window insets support to be released
 class AppCoordinator(
     private val homeIO: HomeIO,
     private val ticketingFlowIO: TicketingFlowIO,

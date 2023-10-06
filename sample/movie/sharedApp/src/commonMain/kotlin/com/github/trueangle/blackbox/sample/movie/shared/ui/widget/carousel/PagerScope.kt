@@ -8,7 +8,7 @@ import androidx.compose.runtime.Stable
 @Stable
 class PagerScope(
     private val state: PagerState,
-    val commingPage: Int
+    val page: Int
 ) {
     /**
      * Returns the current selected page

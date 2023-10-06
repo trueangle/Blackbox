@@ -18,8 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.github.trueangle.blackbox.core.IO
 import com.github.trueangle.blackbox.multiplatform.ViewModel
-import com.github.trueangle.blackbox.multiplatform.ViewModelScope
-import com.github.trueangle.blackbox.multiplatform.rememberScope
 import com.github.trueangle.blackbox.multiplatform.rememberViewModel
 import com.github.trueangle.blackbox.sample.movie.shared.domain.model.Genre
 import com.github.trueangle.blackbox.sample.movie.shared.domain.model.Movie
@@ -123,6 +121,7 @@ fun Featured(
 
     val state by viewModel.screenState.collectAsState()
 
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize(),
@@ -152,22 +151,21 @@ private fun FeaturedMoviesPager(
         val pagerState = remember { PagerState(maxPage = movies.size - 1) }
 
         Pager(state = pagerState, modifier = Modifier.height(645.dp)) {
-            val movie = movies[commingPage]
+            val movie = movies[page]
 
-            val isSelected = pagerState.currentPage == commingPage
+            val isSelected = pagerState.currentPage == page
 
-            val filteredOffset = if (abs(pagerState.currentPage - commingPage) < 2) {
+            val filteredOffset = if (abs(pagerState.currentPage - page) < 2) {
                 currentPageOffset
             } else 0f
 
             MoviePagerItem(
-                movie,
-                state.genres,
-                isSelected,
-                filteredOffset,
-                { },
-                onMovieClick,
-                onBuyTicketClick
+                movie = movie,
+                genres = state.genres,
+                isSelected = isSelected,
+                offset = filteredOffset,
+                openMovieDetail = onMovieClick,
+                onBuyTicketClick = onBuyTicketClick
             )
         }
     } else {

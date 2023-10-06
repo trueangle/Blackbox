@@ -25,9 +25,8 @@ kotlin {
     }
 
     sourceSets {
-        val precomposeVersion = "1.5.4-SNAPSHOT"
+        val precomposeVersion = "1.5.5-SNAPSHOT"
         val coroutinesVersion = "1.7.3"
-
         val commonMain by getting {
             dependencies {
                 implementation(compose.runtime)

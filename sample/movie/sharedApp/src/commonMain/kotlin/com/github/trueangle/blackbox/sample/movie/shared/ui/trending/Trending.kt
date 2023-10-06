@@ -13,8 +13,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.github.trueangle.blackbox.core.IO
 import com.github.trueangle.blackbox.multiplatform.ViewModel
-import com.github.trueangle.blackbox.multiplatform.ViewModelScope
-import com.github.trueangle.blackbox.multiplatform.rememberScope
 import com.github.trueangle.blackbox.multiplatform.rememberViewModel
 import com.github.trueangle.blackbox.sample.movie.design.TopAppBar
 import com.github.trueangle.blackbox.sample.movie.shared.domain.model.Movie

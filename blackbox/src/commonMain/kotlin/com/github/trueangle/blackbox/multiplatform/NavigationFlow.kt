@@ -19,6 +19,5 @@ inline fun NavigationFlow(
         initialRoute = startDestination,
         builder = builder,
         persistNavState = persistNavState
-        //swipeProperties = SwipeProperties()
     )
 }

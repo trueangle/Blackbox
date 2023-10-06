@@ -26,41 +26,41 @@ internal class HomeCoordinator(
         homeIO.input.onEach {
             when (it) {
                 is HomeInput.OnNewOrder -> navigator.navigateTo(
-                    HomeRoutes.BottomBar.Orders.RoutePattern,
+                    HomeRoutes.Orders.routePattern,
                     RouteOptions(launchSingleTop = true)
                 )
             }
         }.launchIn(coroutineScope)
     }
 
-    fun onBottomNavActionClick(clickedTabRoute: HomeRoutes.BottomBar) {
+    fun onBottomNavActionClick(clickedTabRoute: HomeRoutes) {
         when (clickedTabRoute) {
-            HomeRoutes.BottomBar.Featured -> navigator.navigateTo(
-                HomeRoutes.BottomBar.Featured.RoutePattern,
+            HomeRoutes.Featured -> navigator.navigateTo(
+                HomeRoutes.Featured.routePattern,
                 RouteOptions(
                     popUpTo = RouteOptions.PopUpTo(
                         inclusive = true,
-                        route = HomeRoutes.BottomBar.Featured.RoutePattern
+                        route = HomeRoutes.Featured.routePattern
                     )
                 )
             )
 
-            HomeRoutes.BottomBar.Trending -> navigator.navigateTo(
-                HomeRoutes.BottomBar.Trending.RoutePattern,
+            HomeRoutes.Trending -> navigator.navigateTo(
+                HomeRoutes.Trending.routePattern,
                 RouteOptions(
                     launchSingleTop = true,
                     popUpTo = RouteOptions.PopUpTo(
-                        route = HomeRoutes.BottomBar.Featured.RoutePattern
+                        route = HomeRoutes.Featured.routePattern
                     )
                 )
             )
 
-            HomeRoutes.BottomBar.Orders -> navigator.navigateTo(
-                HomeRoutes.BottomBar.Orders.RoutePattern,
+            HomeRoutes.Orders -> navigator.navigateTo(
+                HomeRoutes.Orders.routePattern,
                 RouteOptions(
                     launchSingleTop = true,
                     popUpTo = RouteOptions.PopUpTo(
-                        HomeRoutes.BottomBar.Featured.RoutePattern
+                        HomeRoutes.Featured.routePattern
                     )
                 )
             )

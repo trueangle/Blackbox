@@ -16,6 +16,8 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -56,17 +58,47 @@ class TicketSummaryConfig(
     val seats: ImmutableList<Seat>
 )
 
+@Immutable
 class TicketSummaryDependencies(
     val orderRepository: OrderRepository
 )
 
-private data class TicketSummaryState(
-    val cinema: Cinema,
-    val showTime: ShowTime,
-    val seats: ImmutableList<Seat>,
-    val userProfile: User? = null
+@Composable
+fun TicketSummary(
+    modifier: Modifier,
+    dependencies: TicketSummaryDependencies,
+    io: TicketSummaryIO,
+    config: TicketSummaryConfig
 ) {
-    val totalPriceString = "$" + seats.size * showTime.price
+
+    val viewModel = rememberViewModel {
+        TicketSummaryViewModel(io, config, dependencies.orderRepository)
+    }
+
+    val state by viewModel.state.collectAsState()
+
+    Column(modifier = modifier.padding(bottom = 86.dp)) {
+        Column(
+            modifier = Modifier
+                .weight(1F)
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
+            Summary(modifier = Modifier, state)
+
+            Spacer(Modifier.height(12.dp))
+
+            UserProfile(modifier = Modifier, state.userProfile, viewModel::onLoginClick)
+        }
+
+        Button(
+            modifier = Modifier.padding(vertical = 16.dp).fillMaxWidth(),
+            onClick = viewModel::onPayClick,
+            enabled = state.userProfile != null
+        ) {
+            Text("Pay ${state.totalPriceString}")
+        }
+    }
 }
 
 private class TicketSummaryViewModel(
@@ -113,42 +145,13 @@ private class TicketSummaryViewModel(
     }
 }
 
-@Composable
-fun TicketSummary(
-    modifier: Modifier,
-    dependencies: TicketSummaryDependencies,
-    io: TicketSummaryIO,
-    config: TicketSummaryConfig
+private data class TicketSummaryState(
+    val cinema: Cinema,
+    val showTime: ShowTime,
+    val seats: ImmutableList<Seat>,
+    val userProfile: User? = null
 ) {
-
-    val viewModel = rememberViewModel {
-        TicketSummaryViewModel(io, config, dependencies.orderRepository)
-    }
-
-    val state by viewModel.state.collectAsState()
-
-    Column(modifier = modifier.padding(bottom = 86.dp)) {
-        Column(
-            modifier = Modifier
-                .weight(1F)
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
-            Summary(modifier = Modifier, state)
-
-            Spacer(Modifier.height(12.dp))
-
-            UserProfile(modifier = Modifier, state.userProfile, viewModel::onLoginClick)
-        }
-
-        Button(
-            modifier = Modifier.padding(vertical = 16.dp).fillMaxWidth(),
-            onClick = viewModel::onPayClick,
-            enabled = state.userProfile != null
-        ) {
-            Text("Pay ${state.totalPriceString}")
-        }
-    }
+    val totalPriceString = "$" + seats.size * showTime.price
 }
 
 @Composable

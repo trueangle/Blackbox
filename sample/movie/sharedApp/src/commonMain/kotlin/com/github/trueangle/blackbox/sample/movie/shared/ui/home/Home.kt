@@ -13,19 +13,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import com.github.trueangle.blackbox.multiplatform.NavigationFlow
 import com.github.trueangle.blackbox.multiplatform.rememberScope
 import com.github.trueangle.blackbox.sample.movie.shared.ui.featured.Featured
 import com.github.trueangle.blackbox.sample.movie.shared.ui.trending.Trending
 
-internal sealed interface HomeRoutes {
-    enum class BottomBar(val RoutePattern: String) : HomeRoutes {
-        Featured("featured"),
-        Trending("trending"),
-        Orders("orders")
-    }
+enum class HomeRoutes(val routePattern: String) {
+    Featured("featured"),
+    Trending("trending"),
+    Orders("orders")
 }
 
 @Composable
@@ -38,11 +35,11 @@ internal fun Home(modifier: Modifier, dependencies: HomeDependencies, homeIO: Ho
     ) {
         NavigationFlow(
             modifier = Modifier.fillMaxSize(),
-            startDestination = HomeRoutes.BottomBar.Featured.RoutePattern,
+            startDestination = HomeRoutes.Featured.routePattern,
             coordinator = homeScope.coordinator,
             persistNavState = true
         ) {
-            scene(route = HomeRoutes.BottomBar.Featured.RoutePattern) {
+            scene(route = HomeRoutes.Featured.routePattern) {
                 Featured(
                     modifier = Modifier,
                     dependencies = homeScope.featuredModuleDependencies,
@@ -50,7 +47,7 @@ internal fun Home(modifier: Modifier, dependencies: HomeDependencies, homeIO: Ho
                 )
             }
 
-            scene(route = HomeRoutes.BottomBar.Trending.RoutePattern) {
+            scene(route = HomeRoutes.Trending.routePattern) {
                 Trending(
                     modifier = Modifier,
                     dependencies = homeScope.trendingDependencies,
@@ -58,7 +55,7 @@ internal fun Home(modifier: Modifier, dependencies: HomeDependencies, homeIO: Ho
                 )
             }
 
-            scene(route = HomeRoutes.BottomBar.Orders.RoutePattern) {
+            scene(route = HomeRoutes.Orders.routePattern) {
                 homeScope.ticketingFactory.Orders(Modifier.fillMaxSize())
             }
         }
@@ -72,30 +69,30 @@ private fun HomeBottomBar(coordinator: HomeCoordinator) {
     NavigationBar {
         NavigationBarItem(
             icon = { Icon(imageVector = Icons.Outlined.Home, contentDescription = null) },
-            selected = route == HomeRoutes.BottomBar.Featured.RoutePattern,
+            selected = route == HomeRoutes.Featured.routePattern,
             onClick = {
-                if (route != HomeRoutes.BottomBar.Featured.RoutePattern) {
-                    coordinator.onBottomNavActionClick(HomeRoutes.BottomBar.Featured)
+                if (route != HomeRoutes.Featured.routePattern) {
+                    coordinator.onBottomNavActionClick(HomeRoutes.Featured)
                 }
             },
             label = { Text(text = "Showing") },
         )
         NavigationBarItem(
             icon = { Icon(imageVector = Icons.Outlined.Person, contentDescription = null) },
-            selected = route == HomeRoutes.BottomBar.Trending.RoutePattern,
+            selected = route == HomeRoutes.Trending.routePattern,
             onClick = {
-                if (route != HomeRoutes.BottomBar.Trending.RoutePattern) {
-                    coordinator.onBottomNavActionClick(HomeRoutes.BottomBar.Trending)
+                if (route != HomeRoutes.Trending.routePattern) {
+                    coordinator.onBottomNavActionClick(HomeRoutes.Trending)
                 }
             },
             label = { Text(text = "Trending") }
         )
         NavigationBarItem(
             icon = { Icon(imageVector = Icons.Outlined.Add, contentDescription = null) },
-            selected = route == HomeRoutes.BottomBar.Orders.RoutePattern,
+            selected = route == HomeRoutes.Orders.routePattern,
             onClick = {
-                if (route != HomeRoutes.BottomBar.Orders.RoutePattern) {
-                    coordinator.onBottomNavActionClick(HomeRoutes.BottomBar.Orders)
+                if (route != HomeRoutes.Orders.routePattern) {
+                    coordinator.onBottomNavActionClick(HomeRoutes.Orders)
                 }
             },
             label = { Text(text = "Orders") }
