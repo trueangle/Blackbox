@@ -83,10 +83,9 @@ fun CinemaList(modifier: Modifier, movieName: String, io: CinemaListIO) {
     LazyColumn(
         modifier = modifier.padding(horizontal = 16.dp)
     ) {
+        item { Spacer(Modifier.height(28.dp)) }
+        item { Heading("Cinemas performing $movieName") }
         item { Spacer(Modifier.height(32.dp)) }
-        item { Heading("The list of available cinemas showing $movieName") }
-        item { Spacer(Modifier.height(18.dp)) }
-
         items(items, key = { it.cinema.id }) { cinemaItem ->
             CinemaRow(
                 modifier = Modifier.padding(bottom = 16.dp),
@@ -98,8 +97,6 @@ fun CinemaList(modifier: Modifier, movieName: String, io: CinemaListIO) {
                 }
             )
         }
-
-        item { Spacer(Modifier.height(86.dp)) }
     }
 }
 
@@ -126,7 +123,7 @@ fun CinemaRow(
                     text = cinema.name,
                     fontWeight = FontWeight(500),
                     modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge.copy(fontSize = 21.sp)
                 )
             }
 
@@ -148,7 +145,7 @@ fun CinemaRow(
 @Composable
 fun ShowTimeItem(showTime: ShowTime, onItemClick: (ShowTime) -> Unit) {
     Surface(
-        color = MaterialTheme.colorScheme.secondaryContainer,
+        color = MaterialTheme.colorScheme.tertiaryContainer,
         modifier = Modifier
             .padding(8.dp)
             .clickable(onClick = {
@@ -169,7 +166,7 @@ fun ShowTimeItem(showTime: ShowTime, onItemClick: (ShowTime) -> Unit) {
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight(500),
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8F)
+                    color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.8F)
                 ),
             )
 
@@ -177,7 +174,7 @@ fun ShowTimeItem(showTime: ShowTime, onItemClick: (ShowTime) -> Unit) {
                 text = "from $${showTime.price}",
                 style = TextStyle(
                     fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
                     fontWeight = FontWeight(600)
                 ),
             )

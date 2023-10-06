@@ -45,7 +45,6 @@ class WatchlistDependencies(val repository: MovieRepository)
 
 @Composable
 fun Watchlist(modifier: Modifier, dependencies: WatchlistDependencies) {
-    val surfaceGradient = moviesSurfaceGradient(isSystemInDarkTheme())
 
     val viewModel = rememberViewModel {
         WatchlistViewModel(dependencies.repository)
@@ -59,7 +58,7 @@ fun Watchlist(modifier: Modifier, dependencies: WatchlistDependencies) {
         return
     }
 
-    Surface(modifier = modifier.horizontalGradientBackground(surfaceGradient)) {
+    Surface(modifier = modifier) {
         LazyColumn {
 
             items(myWatchlist) { movie ->

@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.List
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.ShoppingCart
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -68,7 +71,7 @@ private fun HomeBottomBar(coordinator: HomeCoordinator) {
 
     NavigationBar {
         NavigationBarItem(
-            icon = { Icon(imageVector = Icons.Outlined.Home, contentDescription = null) },
+            icon = { Icon(imageVector = Icons.Outlined.Star, contentDescription = null) },
             selected = route == HomeRoutes.Featured.routePattern,
             onClick = {
                 if (route != HomeRoutes.Featured.routePattern) {
@@ -78,7 +81,7 @@ private fun HomeBottomBar(coordinator: HomeCoordinator) {
             label = { Text(text = "Showing") },
         )
         NavigationBarItem(
-            icon = { Icon(imageVector = Icons.Outlined.Person, contentDescription = null) },
+            icon = { Icon(imageVector = Icons.Outlined.List, contentDescription = null) },
             selected = route == HomeRoutes.Trending.routePattern,
             onClick = {
                 if (route != HomeRoutes.Trending.routePattern) {
@@ -88,7 +91,7 @@ private fun HomeBottomBar(coordinator: HomeCoordinator) {
             label = { Text(text = "Trending") }
         )
         NavigationBarItem(
-            icon = { Icon(imageVector = Icons.Outlined.Add, contentDescription = null) },
+            icon = { Icon(imageVector = Icons.Outlined.ShoppingCart, contentDescription = null) },
             selected = route == HomeRoutes.Orders.routePattern,
             onClick = {
                 if (route != HomeRoutes.Orders.routePattern) {

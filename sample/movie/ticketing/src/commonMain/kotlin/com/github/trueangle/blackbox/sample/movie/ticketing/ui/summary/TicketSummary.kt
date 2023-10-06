@@ -31,6 +31,7 @@ import com.github.trueangle.blackbox.multiplatform.ViewModelScope
 import com.github.trueangle.blackbox.multiplatform.rememberScope
 import com.github.trueangle.blackbox.multiplatform.rememberViewModel
 import com.github.trueangle.blackbox.sample.movie.core.domain.model.User
+import com.github.trueangle.blackbox.sample.movie.ticketing.common.Heading
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.model.Cinema
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.model.Order
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.model.Seat
@@ -77,13 +78,19 @@ fun TicketSummary(
 
     val state by viewModel.state.collectAsState()
 
-    Column(modifier = modifier.padding(bottom = 86.dp)) {
+    Column(modifier = modifier) {
         Column(
             modifier = Modifier
                 .weight(1F)
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
+            Spacer(Modifier.height(16.dp))
+
+            Heading("Order confirmation")
+
+            Spacer(Modifier.height(32.dp))
+
             Summary(modifier = Modifier, state)
 
             Spacer(Modifier.height(12.dp))
@@ -92,11 +99,11 @@ fun TicketSummary(
         }
 
         Button(
-            modifier = Modifier.padding(vertical = 16.dp).fillMaxWidth(),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp).fillMaxWidth(),
             onClick = viewModel::onPayClick,
             enabled = state.userProfile != null
         ) {
-            Text("Pay ${state.totalPriceString}")
+            Text(text = "Pay ${state.totalPriceString}", modifier = Modifier.padding(8.dp))
         }
     }
 }
@@ -215,7 +222,7 @@ fun UserProfile(modifier: Modifier, user: User?, onLoginClick: () -> Unit) {
                     )
                 }
             } else {
-                Text("You need to be authorized in order to reserve and pay the tickets")
+                Text("You need to be authorized in order to pay the tickets")
 
                 OutlinedButton(
                     onClick = onLoginClick,
@@ -223,7 +230,7 @@ fun UserProfile(modifier: Modifier, user: User?, onLoginClick: () -> Unit) {
                         .fillMaxWidth()
                         .padding(top = 20.dp, bottom = 24.dp),
                 ) {
-                    Text("Log in")
+                    Text(text = "Log in", modifier = Modifier.padding(8.dp))
                 }
             }
         }

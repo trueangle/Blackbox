@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,7 +30,6 @@ internal fun FlowTopAppBar(
     onClosePressed: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
-
         CenterAlignedTopAppBar(
             title = {
                 WizardAppBarTitle(
@@ -59,9 +59,8 @@ internal fun FlowTopAppBar(
         LinearProgressIndicator(
             progress = animatedProgress,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+                .fillMaxWidth(),
+            trackColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12f),
         )
     }
 }
@@ -73,15 +72,15 @@ internal fun Heading(
 ) {
     Text(
         text = title,
-        style = MaterialTheme.typography.titleMedium,
-        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6F),
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.titleLarge,
+        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6F),
         modifier = modifier
             .fillMaxWidth()
             .background(
                 color = MaterialTheme.colorScheme.inverseOnSurface,
                 shape = MaterialTheme.shapes.small
             )
-            .padding(vertical = 24.dp, horizontal = 16.dp)
     )
 }
 

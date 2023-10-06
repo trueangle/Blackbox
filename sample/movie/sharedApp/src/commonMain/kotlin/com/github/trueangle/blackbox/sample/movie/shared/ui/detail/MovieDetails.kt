@@ -2,6 +2,7 @@ package com.github.trueangle.blackbox.sample.movie.shared.ui.detail
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -131,6 +132,7 @@ internal fun MovieDetails(
 
     LazyColumn(
         modifier = modifier
+            .background(Color.Black)
             .padding(
                 animateDpAsState(
                     if (expand.value) 0.dp else 120.dp,
@@ -180,6 +182,8 @@ internal fun MovieDetails(
                         shape = RoundedCornerShape(0.dp)
                     ) {
                         Column(modifier = Modifier) {
+                            Spacer(Modifier.width(8.dp))
+
                             Row(
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically,
