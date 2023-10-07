@@ -4,6 +4,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,15 +17,22 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,22 +57,66 @@ import com.github.trueangle.blackbox.sample.movie.shared.domain.model.MovieDetai
 import com.github.trueangle.blackbox.sample.movie.shared.domain.repository.GenreRepository
 import com.github.trueangle.blackbox.sample.movie.shared.domain.repository.MovieRepository
 import com.github.trueangle.blackbox.sample.movie.shared.ui.widget.InterestTag
-import com.kmpalette.loader.rememberNetworkLoader
-import com.kmpalette.rememberDominantColorState
 import io.kamel.core.isSuccess
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
-import io.ktor.http.Url
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 @Immutable
+internal data class MovieDetailsConfig(
+    val movieId: String,
+    val dominantColor: String,
+    val dominantOnColor: String
+)
+
+@Immutable
 internal class MovieDetailsDependencies(
     val movieRepository: MovieRepository,
     val genreRepository: GenreRepository
 )
+
+@Composable
+internal fun MovieDetails(
+    modifier: Modifier = Modifier,
+    config: MovieDetailsConfig,
+    dependencies: MovieDetailsDependencies
+) {
+    val scope =
+        rememberScope(key = "MovieDetailsScope") { createScope(config, dependencies) }
+    val vm = scope.viewModel
+
+    val state by vm.state.collectAsState()
+
+    if (state.details != null) {
+        Content(modifier, state, config, vm::onCloseClick)
+    } else {
+        Box(
+            modifier.background(Color.Black),
+            contentAlignment = Alignment.Center
+        ) {
+            if (state.error) {
+                Text(text = "Error loading data", color = Color.White)
+            } else {
+                CircularProgressIndicator(Modifier.size(24.dp))
+            }
+        }
+    }
+}
+
+private fun createScope(
+    config: MovieDetailsConfig,
+    dependencies: MovieDetailsDependencies
+) = ViewModelScope {
+    val interactor = MovieDetailsInteractorImpl(
+        movieRepository = dependencies.movieRepository,
+        genreRepository = dependencies.genreRepository
+    )
+
+    MovieDetailsViewModel(config.movieId, interactor)
+}
 
 private data class MovieDetailsState(
     val error: Boolean = false,
@@ -77,6 +129,7 @@ private class MovieDetailsViewModel(
     private val movieId: String,
     private val interactor: MovieDetailsInteractor
 ) : ViewModel() {
+
     val state = MutableStateFlow(
         MovieDetailsState()
     )
@@ -101,161 +154,160 @@ private class MovieDetailsViewModel(
             }
         }
     }
+
+
+    // todo
+    fun onCloseClick() {
+
+    }
 }
 
-private fun createScope(
-    movieId: String,
-    dependencies: MovieDetailsDependencies
-) = ViewModelScope {
-    val interactor = MovieDetailsInteractorImpl(
-        movieRepository = dependencies.movieRepository,
-        genreRepository = dependencies.genreRepository
-    )
-
-    MovieDetailsViewModel(movieId, interactor)
-}
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun MovieDetails(
-    modifier: Modifier = Modifier,
-    movieId: String,
-    dependencies: MovieDetailsDependencies
+private fun Content(
+    modifier: Modifier,
+    state: MovieDetailsState,
+    config: MovieDetailsConfig,
+    onCloseClick: () -> Unit
 ) {
-    val scope =
-        rememberScope(key = "MovieDetailsScope") { createScope(movieId, dependencies) }
-
     val expand = remember { mutableStateOf(false) }
-
-    val state by scope.viewModel.state.collectAsState()
     val details = state.details
     val similarMovies = state.similarMovies
 
-    LazyColumn(
-        modifier = modifier
-            .background(Color.Black)
-            .padding(
-                animateDpAsState(
-                    if (expand.value) 0.dp else 120.dp,
-                    tween(250)
-                ).value
-            )
-    ) {
-        when {
-            state.error -> item { Text(text = "Error loading data", color = Color.White) }
-            state.details != null -> {
-                item {
-                    val painter = asyncPainterResource(
-                        data = "https://image.tmdb.org/t/p/w500/${details!!.posterPath}"
-                    )
+    val containerColor = remember { Color(config.dominantColor.toULong()) }
+    val containerOnColor = remember { Color(config.dominantOnColor.toULong()) }
 
-                    KamelImage(
-                        resource = painter,
-                        contentScale = ContentScale.Crop,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .height(600.dp)
-                            .fillMaxWidth(),
-                    )
-                    when {
-                        painter.isSuccess -> expand.value = true
-                        else -> expand.value = false
-                    }
-                }
-                item {
-                    val networkLoader = rememberNetworkLoader()
-                    val dominantColorState =
-                        rememberDominantColorState(
-                            loader = networkLoader,
-                            defaultColor = MaterialTheme.colorScheme.background,
-                            defaultOnColor = MaterialTheme.colorScheme.onBackground
-                        )
-
-                    LaunchedEffect(Unit) {
-                        dominantColorState.updateFrom(Url("https://image.tmdb.org/t/p/w500/${details!!.posterPath}"))
-                    }
-
-                    Card(
-                        colors = CardDefaults.cardColors(
-                            containerColor = dominantColorState.color,
-                            contentColor = dominantColorState.onColor,
-                        ),
-                        shape = RoundedCornerShape(0.dp)
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {},
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
+                actions = {
+                    IconButton(
+                        onClick = onCloseClick,
+                        modifier = Modifier.padding(4.dp)
                     ) {
-                        Column(modifier = Modifier) {
+                        Icon(
+                            Icons.Filled.Close,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurface.copy(0.6F)
+                        )
+                    }
+                })
+        }
+    ) {
+        LazyColumn(
+            modifier = modifier
+                .background(containerColor)
+                .padding(
+                    animateDpAsState(
+                        if (expand.value) 0.dp else 120.dp,
+                        tween(150)
+                    ).value
+                )
+        ) {
+            item {
+                val painter = asyncPainterResource(
+                    data = "https://image.tmdb.org/t/p/w500/${details!!.posterPath}"
+                )
+
+                KamelImage(
+                    resource = painter,
+                    contentScale = ContentScale.Crop,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .height(600.dp)
+                        .fillMaxWidth(),
+                )
+                when {
+                    painter.isSuccess -> expand.value = true
+                    else -> expand.value = false
+                }
+            }
+            item {
+
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = containerColor,
+                        contentColor = containerOnColor,
+                    ),
+                    shape = RoundedCornerShape(0.dp)
+                ) {
+                    Column(modifier = Modifier) {
+                        Spacer(Modifier.width(8.dp))
+
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+                        ) {
+                            Text(
+                                text = details!!.title,
+                                modifier = Modifier.padding(vertical = 8.dp),
+                                style = typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                            )
+                        }
+
+                        Row {
                             Spacer(Modifier.width(8.dp))
-
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
-                            ) {
-                                Text(
-                                    text = details!!.title,
-                                    modifier = Modifier.padding(vertical = 8.dp),
-                                    style = typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                                )
+                            details!!.genres.forEach {
+                                InterestTag(text = it.name)
                             }
+                        }
 
-                            Row {
-                                Spacer(Modifier.width(8.dp))
-                                details!!.genres.forEach {
-                                    InterestTag(text = it.name)
-                                }
-                            }
-
+                        Row(modifier = Modifier.padding(start = 8.dp)) {
                             Text(
                                 text = "Release: ${details!!.releaseDate}",
-                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-                                style = typography.titleLarge.copy(fontSize = 12.sp),
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                style = typography.titleLarge.copy(fontSize = 12.sp)
                             )
                             Text(
                                 text = "PG13  •  ${details.voteAverage}/10",
-                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                                 style = typography.titleLarge.copy(
                                     fontSize = 12.sp,
-                                    fontWeight = FontWeight.Medium,
+                                    fontWeight = FontWeight.Medium
                                 )
                             )
-                            Text(
-                                text = details.overview.orEmpty(),
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                                style = typography.titleSmall.copy(
-                                    color = dominantColorState.onColor.copy(
-                                        alpha = 0.6F
-                                    )
-                                ),
-                            )
-                            Spacer(modifier = Modifier.height(20.dp))
-
-                            SimilarMoviesSection(
-                                similarMovies,
-                                color = dominantColorState.onColor.copy(alpha = 0.6F)
-                            )
-
-                            Spacer(modifier = Modifier.height(24.dp))
-
-                            Button(
-                                onClick = {},
-                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                                    .fillMaxWidth()
-                            ) {
-                                Text(text = "Get Tickets", Modifier.padding(8.dp))
-                            }
-
-                            Spacer(modifier = Modifier.height(24.dp))
                         }
+
+                        Text(
+                            text = details?.overview.orEmpty(),
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                            style = typography.titleSmall.copy(
+                                color = containerOnColor.copy(
+                                    alpha = 0.6F
+                                )
+                            ),
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        SimilarMoviesSection(
+                            similarMovies,
+                            color = containerOnColor.copy(alpha = 0.6F)
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        Button(
+                            onClick = {},
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                                .fillMaxWidth()
+                        ) {
+                            Text(text = "Get Tickets", Modifier.padding(8.dp))
+                        }
+
+                        Spacer(modifier = Modifier.height(24.dp))
                     }
                 }
             }
-
-            else -> item { CircularProgressIndicator(Modifier.size(24.dp)) }
         }
     }
 }
 
 @Composable
-internal fun SimilarMoviesSection(similarMovies: ImmutableList<Movie>, color: Color) {
+private fun SimilarMoviesSection(similarMovies: ImmutableList<Movie>, color: Color) {
     Text(
         text = "Similar Movies",
         style = typography.titleMedium.copy(fontSize = 18.sp, color = color),

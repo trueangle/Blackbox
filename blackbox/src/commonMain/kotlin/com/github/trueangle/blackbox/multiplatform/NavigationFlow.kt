@@ -15,7 +15,7 @@ inline fun NavigationFlow(
 ) {
     NavHost(
         modifier = modifier,
-        navigator = coordinator.adapter.precomposeNavigator,
+        navigator = coordinator.precomposeNavigator,
         initialRoute = startDestination,
         builder = builder,
         persistNavState = persistNavState

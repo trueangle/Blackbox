@@ -84,13 +84,12 @@ fun CinemaList(modifier: Modifier, movieName: String, io: CinemaListIO) {
         modifier = modifier.padding(horizontal = 16.dp)
     ) {
         item { Spacer(Modifier.height(28.dp)) }
-        item { Heading("Cinemas performing $movieName") }
+        item { Heading("Cinemas performing\n$movieName") }
         item { Spacer(Modifier.height(32.dp)) }
         items(items, key = { it.cinema.id }) { cinemaItem ->
             CinemaRow(
                 modifier = Modifier.padding(bottom = 16.dp),
                 cinema = cinemaItem.cinema,
-                //imageResourceId = it.imageResourceId,
                 selected = cinemaItem.selected,
                 onItemClick = {
                     viewModel.onItemClick(item = cinemaItem, selectedShowTime = it)
@@ -111,6 +110,7 @@ fun CinemaRow(
         color = MaterialTheme.colorScheme.surface,
         shape = RoundedCornerShape(8.dp),
         modifier = modifier.clip(MaterialTheme.shapes.small)
+            .clickable { onItemClick(cinema.showTimes.first()) }
     ) {
         Column(modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)) {
             Row(

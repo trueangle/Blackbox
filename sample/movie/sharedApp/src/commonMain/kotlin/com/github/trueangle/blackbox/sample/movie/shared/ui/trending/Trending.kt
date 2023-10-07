@@ -5,18 +5,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.github.trueangle.blackbox.core.IO
 import com.github.trueangle.blackbox.multiplatform.ViewModel
 import com.github.trueangle.blackbox.multiplatform.rememberViewModel
 import com.github.trueangle.blackbox.sample.movie.design.TopAppBar
 import com.github.trueangle.blackbox.sample.movie.shared.domain.model.Movie
 import com.github.trueangle.blackbox.sample.movie.shared.domain.repository.MovieRepository
+import com.kmpalette.DominantColorState
+import io.ktor.http.Url
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -29,7 +35,8 @@ import kotlinx.coroutines.launch
 class TrendingDependencies(val repository: MovieRepository)
 
 sealed interface TrendingOutput {
-    data class OnMovieClick(val movie: Movie) : TrendingOutput
+    data class OnMovieClick(val movie: Movie, val dominantColors: Pair<Color, Color>) :
+        TrendingOutput
 }
 
 class TrendingIO : IO<Nothing, TrendingOutput>()
@@ -83,11 +90,22 @@ private class TrendingViewModel(
         }
     }
 
-    fun onMovieSelected(movie: Movie) {
-        coroutineScope.launch { io.output(TrendingOutput.OnMovieClick(movie)) }
+    fun onMovieSelected(movie: Movie, dominantColorState: DominantColorState<Url>) {
+        val dominantColor = dominantColorState.color
+        val dominantOnColor = dominantColorState.onColor
+
+        coroutineScope.launch {
+            io.output(
+                TrendingOutput.OnMovieClick(
+                    movie,
+                    dominantColor to dominantOnColor
+                )
+            )
+        }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Trending(modifier: Modifier, dependencies: TrendingDependencies, trendingIO: TrendingIO) {
 
@@ -103,14 +121,19 @@ fun Trending(modifier: Modifier, dependencies: TrendingDependencies, trendingIO:
         "Top rated TV shows",
     )
 
-    Scaffold(modifier = modifier.fillMaxSize(), topBar = {
-        TopAppBar("Trending")
-    }) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
+    Scaffold(
+        modifier = modifier
+            .fillMaxSize()
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            TopAppBar("Trending", scrollBehavior)
+        }) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-                //.horizontalGradientBackground(surfaceGradient)
                 .verticalScroll(rememberScrollState())
         ) {
 

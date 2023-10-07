@@ -66,11 +66,12 @@ internal fun TicketingFlow(
         rememberScope { TicketingFlowScope(movieName, dependencies, io) }
 
     val coordinator = scope.coordinator as TicketingFlowCoordinator
-    val currentRoute by scope.coordinator.currentRoute.collectAsState(FLOW_STEPS.first())
+    val currentRoute by scope.coordinator.currentRoute.collectAsState()
 
     val stepIndex by remember {
         derivedStateOf {
-            FLOW_STEPS.indexOf(currentRoute)
+            val index = currentRoute ?: FLOW_STEPS.first()
+            FLOW_STEPS.indexOf(index)
         }
     }
 
@@ -81,6 +82,7 @@ internal fun TicketingFlow(
                     stepIndex = stepIndex,
                     totalStepsCount = FLOW_STEPS.size,
                     onClosePressed = coordinator::onToolbarCloseClick,
+                    onBackPressed = coordinator::onToolbarBackClick
                 )
             },
             content = {

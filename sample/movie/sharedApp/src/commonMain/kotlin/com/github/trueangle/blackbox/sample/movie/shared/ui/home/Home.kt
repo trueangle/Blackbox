@@ -78,7 +78,7 @@ private fun HomeBottomBar(coordinator: HomeCoordinator) {
                     coordinator.onBottomNavActionClick(HomeRoutes.Featured)
                 }
             },
-            label = { Text(text = "Showing") },
+            label = { Text(text = "Featured") },
         )
         NavigationBarItem(
             icon = { Icon(imageVector = Icons.Outlined.List, contentDescription = null) },

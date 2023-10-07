@@ -109,4 +109,12 @@ internal class TicketingFlowCoordinator(
             }
         }
     }
+
+    fun onToolbarBackClick() {
+        if (navigator.canGoBack) {
+            navigator.back()
+        } else {
+            coroutineScope.launch { flowIO.output(TicketingFlowOutput.OnClose) }
+        }
+    }
 }

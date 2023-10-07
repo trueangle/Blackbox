@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -32,6 +33,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.github.trueangle.blackbox.sample.movie.design.MainButton
 import com.github.trueangle.blackbox.sample.movie.design.supportWideScreen
 
 @Composable
@@ -85,9 +87,9 @@ internal fun SignInSignUpTopAppBar(
         navigationIcon = {
             IconButton(onClick = onNavUp) {
                 Icon(
-                    imageVector = Icons.Filled.ExitToApp,
+                    imageVector = Icons.Filled.ArrowBack,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.onSurface.copy(0.6F)
                 )
             }
         },
@@ -114,18 +116,13 @@ private fun SignInContent(
             onImeAction = onSubmit
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(42.dp))
 
-        Button(
+        MainButton(
+            modifier = Modifier.fillMaxWidth(),
+            text = "Sign in",
             onClick = onSubmit,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp),
-        ) {
-            Text(
-                text = "Sign in"
-            )
-        }
+        )
     }
 }
 

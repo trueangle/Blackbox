@@ -35,6 +35,7 @@ import com.github.trueangle.blackbox.multiplatform.ViewModel
 import com.github.trueangle.blackbox.multiplatform.ViewModelScope
 import com.github.trueangle.blackbox.multiplatform.rememberScope
 import com.github.trueangle.blackbox.multiplatform.rememberViewModel
+import com.github.trueangle.blackbox.sample.movie.design.MainButton
 import com.github.trueangle.blackbox.sample.movie.ticketing.common.Heading
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.model.Cinema
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.model.Seat
@@ -117,12 +118,13 @@ fun Seats(modifier: Modifier, io: SeatsIO, config: SeatsConfig) {
     val buttonEnabled by viewModel.buttonEnabled.collectAsState(false)
 
     Scaffold(bottomBar = {
-        Button(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-            onClick = viewModel::onNextClick,
-            enabled = buttonEnabled
-        ) {
-            Text(text = "Next", modifier = Modifier.padding(8.dp))
+        Surface {
+            MainButton(
+                modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                text = "Next",
+                onClick = viewModel::onNextClick,
+                enabled = buttonEnabled
+            )
         }
     }) {
         LazyColumn(
@@ -145,7 +147,7 @@ fun Seats(modifier: Modifier, io: SeatsIO, config: SeatsConfig) {
 
             item { SeatsGrid(items = seats, onItemClick = viewModel::onItemClick) }
 
-            item { Spacer(Modifier.height(84.dp)) }
+            item { Spacer(Modifier.height(120.dp)) }
         }
     }
 }
@@ -177,7 +179,7 @@ fun SeatsGrid(
             items.forEach {
                 Spacer(
                     modifier = itemModifier
-                        .background(if (it.selected) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.tertiary)
+                        .background(if (it.selected) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.tertiary)
                         .clickable { onItemClick(it) })
             }
         }

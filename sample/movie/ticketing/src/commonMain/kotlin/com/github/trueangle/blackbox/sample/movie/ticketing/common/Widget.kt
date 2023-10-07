@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,7 +28,8 @@ import androidx.compose.ui.unit.dp
 internal fun FlowTopAppBar(
     stepIndex: Int,
     totalStepsCount: Int,
-    onClosePressed: () -> Unit
+    onClosePressed: () -> Unit,
+    onBackPressed: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         CenterAlignedTopAppBar(
@@ -36,6 +38,20 @@ internal fun FlowTopAppBar(
                     stepIndex = stepIndex,
                     totalStepsCount = totalStepsCount,
                 )
+            },
+            navigationIcon = {
+                if (stepIndex > 0) {
+                    IconButton(
+                        onClick = onBackPressed,
+                        modifier = Modifier.padding(4.dp)
+                    ) {
+                        Icon(
+                            Icons.Filled.ArrowBack,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurface.copy(0.6F)
+                        )
+                    }
+                }
             },
             actions = {
                 IconButton(

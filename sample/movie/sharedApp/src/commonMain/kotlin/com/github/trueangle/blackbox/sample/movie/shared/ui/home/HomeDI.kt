@@ -1,6 +1,7 @@
 package com.github.trueangle.blackbox.sample.movie.shared.ui.home
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.graphics.Color
 import com.github.trueangle.blackbox.sample.movie.shared.ui.featured.FeaturedDependencies
 import com.github.trueangle.blackbox.sample.movie.shared.ui.featured.FeaturedIO
 import com.github.trueangle.blackbox.sample.movie.shared.ui.trending.TrendingDependencies
@@ -26,7 +27,7 @@ sealed interface HomeInput {
 }
 
 sealed interface HomeOutput {
-    data class OnMovieClick(val movie: Movie) : HomeOutput
+    data class OnMovieClick(val movie: Movie, val dominantColors: Pair<Color, Color>) : HomeOutput
     data class OnBuyTicketsClick(val movie: Movie) : HomeOutput
 }
 

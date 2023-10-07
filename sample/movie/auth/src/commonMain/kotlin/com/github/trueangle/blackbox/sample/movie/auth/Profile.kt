@@ -1,5 +1,6 @@
 package com.github.trueangle.blackbox.sample.movie.auth
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.github.trueangle.blackbox.sample.movie.core.domain.model.User
+import com.github.trueangle.blackbox.sample.movie.design.MainButton
 import com.github.trueangle.blackbox.sample.movie.design.supportWideScreen
 
 @Composable
@@ -38,48 +40,64 @@ fun Profile(
             )
         },
         content = { contentPadding ->
-            LazyColumn(
-                modifier = Modifier.supportWideScreen(),
-                contentPadding = contentPadding
+            Column(
+                modifier = Modifier.padding(contentPadding),
             ) {
-                item { Spacer(modifier = Modifier.height(44.dp)) }
-                item {
-                    ProfileEntry(modifier = Modifier, text = user.name)
-                    Spacer(Modifier.height(16.dp))
-                }
-                item {
-                    ProfileEntry(modifier = Modifier, text = user.email)
-                    Spacer(Modifier.height(16.dp))
-                }
-                item {
-                    ProfileEntry(modifier = Modifier, text = user.phone)
-                    Spacer(Modifier.height(16.dp))
-                }
+                Spacer(modifier = Modifier.height(44.dp))
 
-                item { Spacer(Modifier.height(86.dp)) }
+                Surface(
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                        .clip(MaterialTheme.shapes.small),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Column(Modifier.fillMaxWidth().padding(16.dp)) {
 
-                item {
-                    Button(
-                        onClick = { onPick(user) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 16.dp)
-                    ) {
-                        Text(text = "Use the profile")
+                        Text(
+                            modifier = Modifier,
+                            text = "Name:",
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Text(
+                            modifier = Modifier,
+                            text = user.name,
+                            style = MaterialTheme.typography.titleLarge
+                        )
+
+                        Spacer(Modifier.height(16.dp))
+                        Text(
+                            modifier = Modifier,
+                            text = "Email:",
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Text(
+                            modifier = Modifier,
+                            text = user.email,
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                        Spacer(Modifier.height(16.dp))
+                        Text(
+                            modifier = Modifier,
+                            text = "Phone:",
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Text(
+                            modifier = Modifier,
+                            text = user.phone,
+                            style = MaterialTheme.typography.titleLarge
+                        )
                     }
                 }
+
+                Spacer(Modifier.height(16.dp))
+
+                MainButton(
+                    text = "Use the profile",
+                    onClick = { onPick(user) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 16.dp)
+                )
             }
         }
     )
-}
-
-@Composable
-private fun ProfileEntry(modifier: Modifier, text: String) {
-    Surface(
-        color = MaterialTheme.colorScheme.surface,
-        shape = RoundedCornerShape(8.dp),
-        modifier = modifier.clip(MaterialTheme.shapes.small).fillMaxWidth().padding(16.dp)
-    ) {
-        Text(text = text, style = MaterialTheme.typography.titleLarge)
-    }
 }

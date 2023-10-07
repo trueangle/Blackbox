@@ -2,8 +2,8 @@ package com.github.trueangle.blackbox.sample.movie.shared.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.github.trueangle.blackbox.multiplatform.Coordinator
 import com.github.trueangle.blackbox.multiplatform.NavigationFlow
 import com.github.trueangle.blackbox.multiplatform.rememberScope
@@ -13,6 +13,7 @@ import com.github.trueangle.blackbox.sample.movie.auth.AuthIO
 import com.github.trueangle.blackbox.sample.movie.design.MovieAppTheme
 import com.github.trueangle.blackbox.sample.movie.shared.domain.model.Movie
 import com.github.trueangle.blackbox.sample.movie.shared.ui.detail.MovieDetails
+import com.github.trueangle.blackbox.sample.movie.shared.ui.detail.MovieDetailsConfig
 import com.github.trueangle.blackbox.sample.movie.shared.ui.home.Home
 import com.github.trueangle.blackbox.sample.movie.shared.ui.home.HomeIO
 import com.github.trueangle.blackbox.sample.movie.shared.ui.home.HomeInput
@@ -29,9 +30,10 @@ sealed interface AppRoutes {
     }
 
     data object MovieDetails : AppRoutes {
-        const val RoutePattern: String = "movieDetails/{movieId}"
+        const val RoutePattern: String = "movieDetails/{movieId}/{domColor}/{domOnColor}"
 
-        fun routeWithParam(movieId: String) = "movieDetails/${movieId}"
+        fun routeWithParam(movieId: String, dominantColors: Pair<Color, Color>) =
+            "movieDetails/${movieId}/${dominantColors.first.value}/${dominantColors.second.value}"
     }
 
     sealed interface Ticketing : AppRoutes {
@@ -69,7 +71,11 @@ fun App(appDependencies: AppDependencies) {
             dialog(route = AppRoutes.MovieDetails.RoutePattern) { entry ->
                 MovieDetails(
                     modifier = Modifier.fillMaxSize(),
-                    movieId = requireNotNull(entry.path<String>("movieId")),
+                    MovieDetailsConfig(
+                        movieId = requireNotNull(entry.path<String>("movieId")),
+                        dominantColor = requireNotNull(entry.path<String>("domColor")),
+                        dominantOnColor = requireNotNull(entry.path<String>("domOnColor"))
+                    ),
                     dependencies = appScope.movieDetailsDependencies
                 )
             }
@@ -108,7 +114,7 @@ class AppCoordinator(
             homeIO.output.collect {
                 when (it) {
                     is HomeOutput.OnBuyTicketsClick -> navigateToTicketingFlow(it.movie)
-                    is HomeOutput.OnMovieClick -> navigateToMovieDetails(it.movie)
+                    is HomeOutput.OnMovieClick -> navigateToMovieDetails(it)
                 }
             }
         }
@@ -153,9 +159,9 @@ class AppCoordinator(
         }
     }
 
-    private fun navigateToMovieDetails(movie: Movie) {
+    private fun navigateToMovieDetails(event: HomeOutput.OnMovieClick) {
         navigator.navigateTo(
-            AppRoutes.MovieDetails.routeWithParam(movie.id)
+            AppRoutes.MovieDetails.routeWithParam(event.movie.id, event.dominantColors)
         )
     }
 }

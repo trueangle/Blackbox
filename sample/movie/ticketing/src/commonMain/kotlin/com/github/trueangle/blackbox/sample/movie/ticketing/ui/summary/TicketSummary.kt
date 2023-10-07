@@ -3,21 +3,21 @@ package com.github.trueangle.blackbox.sample.movie.ticketing.ui.summary
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -27,10 +27,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.github.trueangle.blackbox.core.IO
 import com.github.trueangle.blackbox.multiplatform.ViewModel
-import com.github.trueangle.blackbox.multiplatform.ViewModelScope
-import com.github.trueangle.blackbox.multiplatform.rememberScope
 import com.github.trueangle.blackbox.multiplatform.rememberViewModel
 import com.github.trueangle.blackbox.sample.movie.core.domain.model.User
+import com.github.trueangle.blackbox.sample.movie.design.MainButton
 import com.github.trueangle.blackbox.sample.movie.ticketing.common.Heading
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.model.Cinema
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.model.Order
@@ -38,6 +37,7 @@ import com.github.trueangle.blackbox.sample.movie.ticketing.domain.model.Seat
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.model.ShowTime
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.repository.OrderRepository
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -78,10 +78,20 @@ fun TicketSummary(
 
     val state by viewModel.state.collectAsState()
 
-    Column(modifier = modifier) {
+    Scaffold(modifier = modifier, bottomBar = {
+        Surface {
+            MainButton(
+                modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                text = "Pay ${state.totalPriceString}",
+                onClick = viewModel::onPayClick,
+                enabled = state.userProfile != null,
+                progress = state.progress
+            )
+        }
+    }) {
         Column(
             modifier = Modifier
-                .weight(1F)
+                .fillMaxSize()
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
@@ -96,14 +106,6 @@ fun TicketSummary(
             Spacer(Modifier.height(12.dp))
 
             UserProfile(modifier = Modifier, state.userProfile, viewModel::onLoginClick)
-        }
-
-        Button(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp).fillMaxWidth(),
-            onClick = viewModel::onPayClick,
-            enabled = state.userProfile != null
-        ) {
-            Text(text = "Pay ${state.totalPriceString}", modifier = Modifier.padding(8.dp))
         }
     }
 }
@@ -130,7 +132,8 @@ private class TicketSummaryViewModel(
         TicketSummaryState(
             cinema = config.cinema,
             showTime = config.showTime,
-            seats = config.seats
+            seats = config.seats,
+            progress = false
         )
     )
 
@@ -139,6 +142,8 @@ private class TicketSummaryViewModel(
     }
 
     fun onPayClick() {
+        state.value = state.value.copy(progress = true)
+
         coroutineScope.launch {
             val order = Order(
                 movieName = config.movieName,
@@ -156,7 +161,8 @@ private data class TicketSummaryState(
     val cinema: Cinema,
     val showTime: ShowTime,
     val seats: ImmutableList<Seat>,
-    val userProfile: User? = null
+    val userProfile: User? = null,
+    val progress: Boolean
 ) {
     val totalPriceString = "$" + seats.size * showTime.price
 }
@@ -222,7 +228,10 @@ fun UserProfile(modifier: Modifier, user: User?, onLoginClick: () -> Unit) {
                     )
                 }
             } else {
-                Text("You need to be authorized in order to pay the tickets")
+                Text(
+                    "You need to be authorized in order to pay the tickets",
+                    style = MaterialTheme.typography.titleMedium
+                )
 
                 OutlinedButton(
                     onClick = onLoginClick,
@@ -311,7 +320,10 @@ private fun Summary(modifier: Modifier, state: TicketSummaryState) {
                 )
                 Text(
                     text = state.totalPriceString,
-                    style = MaterialTheme.typography.labelLarge
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold
+                    )
                 )
             }
         }

@@ -9,23 +9,29 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.github.truangle.blackbox.design.typography
 import com.github.trueangle.blackbox.sample.movie.shared.domain.model.Movie
+import com.kmpalette.DominantColorState
+import com.kmpalette.loader.rememberNetworkLoader
+import com.kmpalette.rememberDominantColorState
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import io.ktor.http.Url
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 internal fun TrendingSection(
     sectionState: TrendingSectionState,
     title: String = "",
-    onMovieSelected: (Movie) -> Unit
+    onMovieSelected: (Movie, DominantColorState<Url>) -> Unit
 ) {
     when {
         sectionState.error -> {
@@ -48,7 +54,7 @@ internal fun TrendingSection(
 private fun Content(
     movies: ImmutableList<Movie>,
     title: String = "",
-    onMovieSelected: (Movie) -> Unit
+    onMovieSelected: (Movie, DominantColorState<Url>) -> Unit
 ) {
     if (title.isNotEmpty()) {
         Text(
@@ -57,13 +63,28 @@ private fun Content(
             modifier = Modifier.padding(start = 16.dp, end = 8.dp, bottom = 8.dp, top = 24.dp)
         )
     }
+
     LazyRow {
         items(
             items = movies,
             itemContent = { movie: Movie ->
+
+                val networkLoader = rememberNetworkLoader()
+                val dominantColorState =
+                    rememberDominantColorState(
+                        loader = networkLoader,
+                        defaultColor = MaterialTheme.colorScheme.background,
+                        defaultOnColor = MaterialTheme.colorScheme.onBackground
+                    )
+
+                val posterUrl = "https://image.tmdb.org/t/p/w500/${movie.poster_path}"
+                LaunchedEffect(Unit) {
+                    dominantColorState.updateFrom(Url(posterUrl))
+                }
+
                 KamelImage(
                     resource = asyncPainterResource(
-                        data = "https://image.tmdb.org/t/p/w500/${movie.poster_path}",
+                        data = posterUrl,
                     ),
                     contentDescription = null,
                     modifier = Modifier
@@ -71,7 +92,7 @@ private fun Content(
                         .height(300.dp)
                         .padding(12.dp)
                         .clip(RoundedCornerShape(12.dp))
-                        .clickable(onClick = { onMovieSelected(movie) }),
+                        .clickable(onClick = { onMovieSelected(movie, dominantColorState) }),
                     contentScale = ContentScale.Crop
                 )
             })

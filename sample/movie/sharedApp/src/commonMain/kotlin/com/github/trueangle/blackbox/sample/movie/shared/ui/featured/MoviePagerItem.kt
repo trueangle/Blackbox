@@ -4,11 +4,14 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -17,6 +20,7 @@ import androidx.compose.material3.CardDefaults.cardElevation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -31,8 +35,12 @@ import com.github.truangle.blackbox.design.typography
 import com.github.trueangle.blackbox.sample.movie.shared.domain.model.Genre
 import com.github.trueangle.blackbox.sample.movie.shared.domain.model.Movie
 import com.github.trueangle.blackbox.sample.movie.shared.ui.widget.InterestTag
+import com.kmpalette.DominantColorState
+import com.kmpalette.loader.rememberNetworkLoader
+import com.kmpalette.rememberDominantColorState
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import io.ktor.http.Url
 import kotlin.math.abs
 import kotlin.math.min
 
@@ -42,7 +50,7 @@ fun MoviePagerItem(
     genres: List<Genre>,
     isSelected: Boolean,
     offset: Float,
-    openMovieDetail: (Movie) -> Unit,
+    onItemClick: (Movie, DominantColorState<Url>) -> Unit,
     onBuyTicketClick: (Movie) -> Unit
 ) {
     val animateHeight = getOffsetBasedValue(
@@ -74,14 +82,26 @@ fun MoviePagerItem(
         }
     }
 
+    val networkLoader = rememberNetworkLoader()
+    val dominantColorState =
+        rememberDominantColorState(
+            loader = networkLoader,
+            defaultColor = MaterialTheme.colorScheme.background,
+            defaultOnColor = MaterialTheme.colorScheme.onBackground
+        )
+
+    LaunchedEffect(Unit) {
+        dominantColorState.updateFrom(Url("https://image.tmdb.org/t/p/w500/${movie.poster_path}"))
+    }
+
     Card(
         elevation = cardElevation(animateDpAsState(animateElevation).value),
         modifier = Modifier
             .width(animateWidth)
             .height(animateHeight)
-            .padding(24.dp)
+            .padding(top = 0.dp, start = 24.dp, end = 24.dp, bottom = 0.dp)
             .clickable {
-                openMovieDetail(movie)
+                onItemClick(movie, dominantColorState)
             },
         shape = RoundedCornerShape(16.dp),
         colors = cardColors(
@@ -106,27 +126,37 @@ fun MoviePagerItem(
                 Text(
                     text = movie.title.orEmpty(),
                     modifier = Modifier.padding(8.dp),
-                    style = typography.titleLarge
+                    style = typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                 )
             }
-            Row {
-                movieGenres?.forEach {
-                    InterestTag(text = it.name)
+
+            movieGenres?.let { genres ->
+                LazyRow() {
+                    items(genres) {
+                        InterestTag(text = it.name)
+                    }
                 }
             }
-            Text(
-                text = "Release: ${movie.release_date}",
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                style = typography.titleLarge.copy(fontSize = 12.sp)
-            )
-            Text(
-                text = "PG13  •  ${movie.vote_average}/10",
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                style = typography.titleLarge.copy(fontSize = 12.sp, fontWeight = FontWeight.Medium)
-            )
+
+            Row {
+                Text(
+                    text = "Release: ${movie.release_date}",
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    style = typography.titleLarge.copy(fontSize = 12.sp)
+                )
+                Text(
+                    text = "PG13  •  ${movie.vote_average}/10",
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    style = typography.titleLarge.copy(
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                )
+            }
+
             Text(
                 text = movie.overview,
-                maxLines = 1,
+                maxLines = 5,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)

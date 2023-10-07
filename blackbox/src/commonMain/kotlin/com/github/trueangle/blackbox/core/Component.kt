@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @Stable
 open class IO<Input, Output> {
@@ -38,6 +39,10 @@ abstract class BaseCoordinator {
 }
 
 interface Navigator {
+    val canGoBack: Boolean
+
+    val currentRoute: StateFlow<String?>
+
     fun navigateTo(route: String, routeOptions: RouteOptions? = null)
 
     fun back()

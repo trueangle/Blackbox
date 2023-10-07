@@ -6,7 +6,6 @@ import com.github.trueangle.blackbox.sample.movie.shared.ui.trending.TrendingIO
 import com.github.trueangle.blackbox.sample.movie.shared.ui.trending.TrendingOutput
 import com.github.trueangle.blackbox.core.RouteOptions
 import com.github.trueangle.blackbox.multiplatform.Coordinator
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -70,7 +69,13 @@ internal class HomeCoordinator(
     private fun handleFeaturedIO() {
         featuredIO.output.onEach {
             when (it) {
-                is FeaturedOutput.OnMovieClick -> homeIO.output(HomeOutput.OnMovieClick(it.movie))
+                is FeaturedOutput.OnMovieClick -> homeIO.output(
+                    HomeOutput.OnMovieClick(
+                        it.movie,
+                        it.dominantColors
+                    )
+                )
+
                 is FeaturedOutput.OnBuyTicketClick -> homeIO.output(
                     HomeOutput.OnBuyTicketsClick(
                         it.movie
@@ -83,7 +88,12 @@ internal class HomeCoordinator(
     private fun handleTrendingIO() {
         trendingIO.output.onEach {
             when (it) {
-                is TrendingOutput.OnMovieClick -> homeIO.output(HomeOutput.OnMovieClick(it.movie))
+                is TrendingOutput.OnMovieClick -> homeIO.output(
+                    HomeOutput.OnMovieClick(
+                        it.movie,
+                        it.dominantColors
+                    )
+                )
             }
         }.launchIn(coroutineScope)
     }
