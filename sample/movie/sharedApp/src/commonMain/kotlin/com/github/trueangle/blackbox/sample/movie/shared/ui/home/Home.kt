@@ -1,6 +1,8 @@
 package com.github.trueangle.blackbox.sample.movie.shared.ui.home
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Home
@@ -37,7 +39,9 @@ internal fun Home(modifier: Modifier, dependencies: HomeDependencies, homeIO: Ho
         bottomBar = { HomeBottomBar(homeScope.coordinator as HomeCoordinator) }
     ) {
         NavigationFlow(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .padding(PaddingValues(bottom = it.calculateBottomPadding()))
+                .fillMaxSize(),
             startDestination = HomeRoutes.Featured.routePattern,
             coordinator = homeScope.coordinator,
             persistNavState = true

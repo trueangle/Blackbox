@@ -78,7 +78,7 @@ internal class HomeCoordinator(
 
                 is FeaturedOutput.OnBuyTicketClick -> homeIO.output(
                     HomeOutput.OnBuyTicketsClick(
-                        it.movie
+                        it.movie.title ?: it.movie.name ?: ""
                     )
                 )
             }

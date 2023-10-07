@@ -28,7 +28,7 @@ sealed interface HomeInput {
 
 sealed interface HomeOutput {
     data class OnMovieClick(val movie: Movie, val dominantColors: Pair<Color, Color>) : HomeOutput
-    data class OnBuyTicketsClick(val movie: Movie) : HomeOutput
+    data class OnBuyTicketsClick(val movieName: String) : HomeOutput
 }
 
 class HomeIO : IO<HomeInput, HomeOutput>()

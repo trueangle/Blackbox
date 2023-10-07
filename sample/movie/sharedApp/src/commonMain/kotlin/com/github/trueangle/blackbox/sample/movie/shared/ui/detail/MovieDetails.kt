@@ -46,9 +46,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.truangle.blackbox.design.typography
+import com.github.trueangle.blackbox.core.IO
 import com.github.trueangle.blackbox.multiplatform.ViewModel
 import com.github.trueangle.blackbox.multiplatform.ViewModelScope
 import com.github.trueangle.blackbox.multiplatform.rememberScope
+import com.github.trueangle.blackbox.sample.movie.design.MainButton
 import com.github.trueangle.blackbox.sample.movie.shared.domain.interactor.MovieDetailsInteractor
 import com.github.trueangle.blackbox.sample.movie.shared.domain.interactor.MovieDetailsInteractorImpl
 import com.github.trueangle.blackbox.sample.movie.shared.domain.model.Genre
@@ -68,6 +70,7 @@ import kotlinx.coroutines.launch
 @Immutable
 internal data class MovieDetailsConfig(
     val movieId: String,
+    val movieName: String,
     val dominantColor: String,
     val dominantOnColor: String
 )
@@ -78,20 +81,28 @@ internal class MovieDetailsDependencies(
     val genreRepository: GenreRepository
 )
 
+sealed interface MovieDetailsOutput {
+    data object OnClose : MovieDetailsOutput
+    data class OnRequestTickets(val movieName: String) : MovieDetailsOutput
+}
+
+class MovieDetailsIO : IO<Nothing, MovieDetailsOutput>()
+
 @Composable
 internal fun MovieDetails(
     modifier: Modifier = Modifier,
     config: MovieDetailsConfig,
-    dependencies: MovieDetailsDependencies
+    dependencies: MovieDetailsDependencies,
+    io: MovieDetailsIO
 ) {
     val scope =
-        rememberScope(key = "MovieDetailsScope") { createScope(config, dependencies) }
+        rememberScope(key = "MovieDetailsScope") { createScope(config, dependencies, io) }
     val vm = scope.viewModel
 
     val state by vm.state.collectAsState()
 
     if (state.details != null) {
-        Content(modifier, state, config, vm::onCloseClick)
+        Content(modifier, state, config, vm::onCloseClick, vm::onRequestTickets)
     } else {
         Box(
             modifier.background(Color.Black),
@@ -108,14 +119,15 @@ internal fun MovieDetails(
 
 private fun createScope(
     config: MovieDetailsConfig,
-    dependencies: MovieDetailsDependencies
+    dependencies: MovieDetailsDependencies,
+    io: MovieDetailsIO
 ) = ViewModelScope {
     val interactor = MovieDetailsInteractorImpl(
         movieRepository = dependencies.movieRepository,
         genreRepository = dependencies.genreRepository
     )
 
-    MovieDetailsViewModel(config.movieId, interactor)
+    MovieDetailsViewModel(config, interactor, io)
 }
 
 private data class MovieDetailsState(
@@ -126,8 +138,9 @@ private data class MovieDetailsState(
 )
 
 private class MovieDetailsViewModel(
-    private val movieId: String,
-    private val interactor: MovieDetailsInteractor
+    private val config: MovieDetailsConfig,
+    private val interactor: MovieDetailsInteractor,
+    private val io: MovieDetailsIO
 ) : ViewModel() {
 
     val state = MutableStateFlow(
@@ -137,7 +150,7 @@ private class MovieDetailsViewModel(
     init {
         coroutineScope.launch {
             runCatching {
-                interactor.getDetailsByMovieId(movieId)
+                interactor.getDetailsByMovieId(config.movieId)
             }.onSuccess { result ->
                 val oldState = state.value
 
@@ -155,10 +168,12 @@ private class MovieDetailsViewModel(
         }
     }
 
+    fun onRequestTickets() {
+        coroutineScope.launch { io.output(MovieDetailsOutput.OnRequestTickets(config.movieName)) }
+    }
 
-    // todo
     fun onCloseClick() {
-
+        coroutineScope.launch { io.output(MovieDetailsOutput.OnClose) }
     }
 }
 
@@ -168,7 +183,8 @@ private fun Content(
     modifier: Modifier,
     state: MovieDetailsState,
     config: MovieDetailsConfig,
-    onCloseClick: () -> Unit
+    onCloseClick: () -> Unit,
+    onRequestTickets: () -> Unit
 ) {
     val expand = remember { mutableStateOf(false) }
     val details = state.details
@@ -290,13 +306,12 @@ private fun Content(
 
                         Spacer(modifier = Modifier.height(24.dp))
 
-                        Button(
-                            onClick = {},
+                        MainButton(
+                            text = "Get tickets",
+                            onClick = onRequestTickets,
                             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                                 .fillMaxWidth()
-                        ) {
-                            Text(text = "Get Tickets", Modifier.padding(8.dp))
-                        }
+                        )
 
                         Spacer(modifier = Modifier.height(24.dp))
                     }

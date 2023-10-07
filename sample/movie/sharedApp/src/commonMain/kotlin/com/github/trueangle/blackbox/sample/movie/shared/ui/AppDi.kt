@@ -9,6 +9,7 @@ import com.github.trueangle.blackbox.sample.movie.auth.AuthIO
 import com.github.trueangle.blackbox.sample.movie.shared.data.api.MoviesApi
 import com.github.trueangle.blackbox.sample.movie.shared.data.repository.GenreRepositoryImpl
 import com.github.trueangle.blackbox.sample.movie.shared.data.repository.MovieRepositoryImpl
+import com.github.trueangle.blackbox.sample.movie.shared.ui.detail.MovieDetailsIO
 import com.github.trueangle.blackbox.sample.movie.ticketing.TicketingFlowIO
 import com.github.trueangle.blackbox.sample.movie.ticketing.ui.TicketingDependencies
 import com.github.trueangle.blackbox.sample.movie.ticketing.ui.TicketingFactory
@@ -26,6 +27,7 @@ internal class AppScope(appDependencies: AppDependencies) : FlowScope() {
     val ticketingFlowIO by lazy { TicketingFlowIO() }
     val authIO by lazy { AuthIO() }
     val homeIO by lazy { HomeIO() }
+    val movieDetailsIO by lazy { MovieDetailsIO() }
 
     val movieDetailsDependencies by lazy {
         MovieDetailsDependencies(
@@ -45,6 +47,6 @@ internal class AppScope(appDependencies: AppDependencies) : FlowScope() {
     val ticketingFactory by lazy { TicketingFactory(TicketingDependencies(httpClient = appDependencies.httpClient)) }
 
     init {
-        coordinator { AppCoordinator(homeIO, ticketingFlowIO, authIO) }
+        coordinator { AppCoordinator(homeIO, ticketingFlowIO, authIO, movieDetailsIO) }
     }
 }

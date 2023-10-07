@@ -24,6 +24,7 @@ import com.github.trueangle.blackbox.multiplatform.NavigationFlow
 import com.github.trueangle.blackbox.multiplatform.rememberScope
 import com.github.trueangle.blackbox.sample.movie.core.domain.model.User
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.model.Order
+import com.github.trueangle.blackbox.sample.movie.ticketing.ui.TicketingConfig
 import com.github.trueangle.blackbox.sample.movie.ticketing.ui.cinema.CinemaList
 import com.github.trueangle.blackbox.sample.movie.ticketing.ui.seats.Seats
 import com.github.trueangle.blackbox.sample.movie.ticketing.ui.seats.SeatsConfig
@@ -58,12 +59,13 @@ internal sealed interface FlowRoutes {
 
 @Composable
 internal fun TicketingFlow(
+    modifier: Modifier,
     dependencies: TicketingFlowDependencies,
     io: TicketingFlowIO,
-    movieName: String
+    config: TicketingConfig
 ) {
     val scope =
-        rememberScope { TicketingFlowScope(movieName, dependencies, io) }
+        rememberScope { TicketingFlowScope(config, dependencies, io) }
 
     val coordinator = scope.coordinator as TicketingFlowCoordinator
     val currentRoute by scope.coordinator.currentRoute.collectAsState()
@@ -75,7 +77,7 @@ internal fun TicketingFlow(
         }
     }
 
-    Surface(modifier = Modifier.supportWideScreen()) {
+    Surface(modifier = modifier) {
         Scaffold(
             topBar = {
                 FlowTopAppBar(
@@ -89,7 +91,7 @@ internal fun TicketingFlow(
                 NavigationContent(
                     modifier = Modifier.padding(it).fillMaxSize(),
                     scope,
-                    movieName
+                    config.movieName
                 )
             }
         )
@@ -107,7 +109,7 @@ private fun NavigationContent(modifier: Modifier, scope: TicketingFlowScope, mov
     val coordinator = scope.coordinator as TicketingFlowCoordinator
 
     NavigationFlow(
-        modifier = modifier,
+        modifier = modifier.supportWideScreen(),
         startDestination = FlowRoutes.CinemaList.RoutePattern,
         coordinator = scope.coordinator,
         persistNavState = false

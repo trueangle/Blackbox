@@ -11,6 +11,7 @@ kotlin {
     targetHierarchy.default()
 
     androidTarget ()
+    jvm("desktop")
 
     val xcf = XCFramework()
     listOf(
@@ -26,7 +27,6 @@ kotlin {
 
     sourceSets {
         val ktorVersion = "2.3.3"
-        val mediaKamelVersion = "0.7.2"
         val immutableCollectionsVersion = "0.3.5"
 
         val commonMain by getting {
@@ -46,6 +46,12 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+            }
+        }
+
+        val desktopMain by getting {
+            dependencies {
+                implementation(compose.desktop.common)
             }
         }
     }

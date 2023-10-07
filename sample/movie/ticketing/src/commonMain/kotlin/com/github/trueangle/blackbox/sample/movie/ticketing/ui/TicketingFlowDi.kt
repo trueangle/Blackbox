@@ -13,7 +13,7 @@ import com.github.trueangle.blackbox.sample.movie.ticketing.ui.summary.TicketSum
 class TicketingFlowDependencies(val orderRepository: OrderRepository)
 
 internal class TicketingFlowScope(
-    movieName: String,
+    config: TicketingConfig,
     dependencies: TicketingFlowDependencies,
     io: TicketingFlowIO
 ) : FlowScope() {
@@ -29,7 +29,7 @@ internal class TicketingFlowScope(
     init {
         coordinator {
             TicketingFlowCoordinator(
-                movieName = movieName,
+                movieName = config.movieName,
                 flowIO = io,
                 cinemaListIO = cinemaListIO,
                 seatsIO = seatsIO,

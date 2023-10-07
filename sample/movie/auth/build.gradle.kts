@@ -11,6 +11,7 @@ kotlin {
     targetHierarchy.default()
 
     androidTarget()
+    jvm("desktop")
     
     val xcf = XCFramework()
     listOf(
@@ -39,6 +40,12 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+            }
+        }
+
+        val desktopMain by getting {
+            dependencies {
+                implementation(compose.desktop.common)
             }
         }
     }

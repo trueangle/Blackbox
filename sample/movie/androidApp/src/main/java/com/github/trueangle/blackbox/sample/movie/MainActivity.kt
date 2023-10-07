@@ -13,9 +13,7 @@ class MainActivity : PreComposeActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            MyApplicationTheme {
-                CreateMovieApp()
-            }
+            CreateMovieApp()
         }
     }
 }

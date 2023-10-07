@@ -1,6 +1,7 @@
 package com.github.trueangle.blackbox.sample.movie.shared.ui.trending
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -132,8 +133,8 @@ fun Trending(modifier: Modifier, dependencies: TrendingDependencies, trendingIO:
         }) {
         Column(
             modifier = Modifier
+                .padding(PaddingValues(top = it.calculateTopPadding()))
                 .fillMaxSize()
-                .padding(it)
                 .verticalScroll(rememberScrollState())
         ) {
 

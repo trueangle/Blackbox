@@ -2,6 +2,7 @@ package com.github.trueangle.blackbox.sample.movie.shared.ui.trending
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -13,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -33,29 +35,6 @@ internal fun TrendingSection(
     title: String = "",
     onMovieSelected: (Movie, DominantColorState<Url>) -> Unit
 ) {
-    when {
-        sectionState.error -> {
-            Box {
-                Text("Error loading data")
-            }
-        }
-
-        sectionState.data.isNotEmpty() -> Content(
-            sectionState.data,
-            title,
-            onMovieSelected
-        )
-
-        else -> CircularProgressIndicator()
-    }
-}
-
-@Composable
-private fun Content(
-    movies: ImmutableList<Movie>,
-    title: String = "",
-    onMovieSelected: (Movie, DominantColorState<Url>) -> Unit
-) {
     if (title.isNotEmpty()) {
         Text(
             text = title,
@@ -63,7 +42,34 @@ private fun Content(
             modifier = Modifier.padding(start = 16.dp, end = 8.dp, bottom = 8.dp, top = 24.dp)
         )
     }
+    when {
+        sectionState.data.isNotEmpty() -> Content(
+            sectionState.data,
+            onMovieSelected
+        )
 
+        else -> {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                if (sectionState.error) {
+                    Text("Error loading data")
+                } else {
+                    CircularProgressIndicator()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun Content(
+    movies: ImmutableList<Movie>,
+    onMovieSelected: (Movie, DominantColorState<Url>) -> Unit
+) {
     LazyRow {
         items(
             items = movies,

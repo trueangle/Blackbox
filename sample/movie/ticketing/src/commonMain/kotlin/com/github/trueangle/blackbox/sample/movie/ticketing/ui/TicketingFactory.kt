@@ -10,9 +10,8 @@ import com.github.trueangle.blackbox.sample.movie.ticketing.ui.orders.Orders
 import com.github.trueangle.blackbox.sample.movie.ticketing.ui.orders.OrdersDependencies
 import io.ktor.client.HttpClient
 
-// todo
 @Immutable
-class TicketingConfig(movieName: String)
+class TicketingConfig(val movieName: String)
 
 @Immutable
 class TicketingDependencies(httpClient: HttpClient)
@@ -22,10 +21,11 @@ class TicketingFactory(private val dependencies: TicketingDependencies) {
     private val orderRepository by lazy { OrderRepositoryImpl() }
 
     @Composable
-    fun TicketingFlow(
+    fun CreateTicketingFlow(
+        modifier: Modifier,
         io: TicketingFlowIO,
-        movieName: String
-    ) = TicketingFlow(TicketingFlowDependencies(orderRepository), io, movieName)
+        config: TicketingConfig
+    ) = TicketingFlow(modifier, TicketingFlowDependencies(orderRepository), io, config)
 
     @Composable
     fun Orders(modifier: Modifier) = Orders(
