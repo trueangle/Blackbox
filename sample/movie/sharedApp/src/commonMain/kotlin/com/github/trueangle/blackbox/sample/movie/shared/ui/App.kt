@@ -1,8 +1,8 @@
 package com.github.trueangle.blackbox.sample.movie.shared.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.github.trueangle.blackbox.multiplatform.Coordinator
@@ -29,6 +29,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.navigation.path
 
+@Immutable
+data class AppConfig(val deeplink: String? = null)
+
 sealed interface AppRoutes {
     data object Home : AppRoutes {
         const val RoutePattern: String = "home"
@@ -44,9 +47,9 @@ sealed interface AppRoutes {
 
     sealed interface Ticketing : AppRoutes {
         data object Flow : Ticketing {
-            const val RoutePattern: String = "ticketing/{movieName}"
+            const val RoutePattern: String = "movie://app/ticketing/{movieName}"
 
-            fun routeWithParam(movieName: String) = "ticketing/${movieName}"
+            fun routeWithParam(movieName: String) = "movie://app/ticketing/${movieName}"
         }
     }
 
@@ -56,8 +59,8 @@ sealed interface AppRoutes {
 }
 
 @Composable
-fun App(appDependencies: AppDependencies) {
-    val appScope = rememberScope { AppScope(appDependencies) }
+fun App(appDependencies: AppDependencies, config: AppConfig) {
+    val appScope = rememberScope { AppScope(appDependencies, config) }
 
     MovieAppTheme {
         NavigationFlow(
@@ -112,10 +115,15 @@ class AppCoordinator(
     private val homeIO: HomeIO,
     private val ticketingFlowIO: TicketingFlowIO,
     private val authIO: AuthIO,
-    private val movieDetailsIO: MovieDetailsIO
+    private val movieDetailsIO: MovieDetailsIO,
+    private val config: AppConfig
 ) : Coordinator() {
 
     init {
+        if (config.deeplink != null) {
+            navigator.navigateTo(config.deeplink)
+        }
+
         handleHomeIO()
         handleTicketingFlowIO()
         handleAuthIO()

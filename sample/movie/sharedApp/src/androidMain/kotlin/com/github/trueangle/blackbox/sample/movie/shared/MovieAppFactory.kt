@@ -1,7 +1,9 @@
 package com.github.trueangle.blackbox.sample.movie.shared
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import com.github.trueangle.blackbox.sample.movie.shared.ui.App
+import com.github.trueangle.blackbox.sample.movie.shared.ui.AppConfig
 import com.github.trueangle.blackbox.sample.movie.shared.ui.AppDependencies
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -14,7 +16,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
 @Composable
-fun CreateMovieApp() = App(AppDependencies(KtorClient()))
+fun CreateMovieApp(config: AppConfig) = App(AppDependencies(KtorClient()), config)
 
 @OptIn(ExperimentalSerializationApi::class)
 private fun KtorClient() = HttpClient {

@@ -38,7 +38,11 @@ internal class NavigatorAdapter(
         )
 
     override fun navigateTo(route: String, routeOptions: RouteOptions?) {
-        precomposeNavigator.navigate(route, routeOptions?.toNavOptions())
+        runCatching {
+            precomposeNavigator.navigate(route, routeOptions?.toNavOptions())
+        }.onFailure {
+            println(it.message)
+        }
     }
 
     override fun back() {

@@ -18,7 +18,7 @@ import io.ktor.client.HttpClient
 @Immutable
 class AppDependencies(val httpClient: HttpClient)
 
-internal class AppScope(appDependencies: AppDependencies) : FlowScope() {
+internal class AppScope(appDependencies: AppDependencies, config: AppConfig) : FlowScope() {
     val api by lazy { MoviesApi(appDependencies.httpClient) }
 
     val movieRepository by lazy { MovieRepositoryImpl(api) }
@@ -47,6 +47,6 @@ internal class AppScope(appDependencies: AppDependencies) : FlowScope() {
     val ticketingFactory by lazy { TicketingFactory(TicketingDependencies(httpClient = appDependencies.httpClient)) }
 
     init {
-        coordinator { AppCoordinator(homeIO, ticketingFlowIO, authIO, movieDetailsIO) }
+        coordinator { AppCoordinator(homeIO, ticketingFlowIO, authIO, movieDetailsIO, config) }
     }
 }

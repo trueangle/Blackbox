@@ -1,5 +1,6 @@
 package com.github.trueangle.blackbox.sample.movie.shared
 
+import com.github.trueangle.blackbox.sample.movie.shared.ui.AppConfig
 import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.ExportObjCClass
@@ -7,6 +8,7 @@ import moe.tlaster.precompose.PreComposeAppController
 import platform.Foundation.NSClassFromString
 import platform.Foundation.NSLog
 import platform.Foundation.NSUserActivity
+import platform.UIKit.UIOpenURLContext
 import platform.UIKit.UIResponder
 import platform.UIKit.UIResponderMeta
 import platform.UIKit.UIScene
@@ -38,11 +40,16 @@ class MovieAppSceneDelegate : UIResponder, UIWindowSceneDelegateProtocol {
         options: UISceneConnectionOptions
     ) {
         val windowScene = (scene as? UIWindowScene) ?: return
-
         val activity = (options.userActivities.firstOrNull()
             ?: scene.session.stateRestorationActivity) as? NSUserActivity
 
-        val appController = createMovieAppController(activity)
+        val urlContexts = options.URLContexts as? Set<UIOpenURLContext>
+        val deeplink = urlContexts?.firstOrNull()?.URL?.absoluteString
+
+        val appController = createMovieAppController(
+            nsUserActivity = activity,
+            config = AppConfig(deeplink = deeplink)
+        )
 
         if (appController.isRestoredFromState) {
             windowScene.userActivity = activity
@@ -55,6 +62,16 @@ class MovieAppSceneDelegate : UIResponder, UIWindowSceneDelegateProtocol {
         window?.windowScene = windowScene
         window?.rootViewController = appController
         window?.makeKeyAndVisible()
+    }
+
+    override fun scene(scene: UIScene, openURLContexts: Set<*>) {
+        val urlContexts = openURLContexts as? Set<UIOpenURLContext>
+        val deeplink = urlContexts?.firstOrNull()?.URL?.absoluteString
+
+        window?.rootViewController = createMovieAppController(
+            nsUserActivity = null,
+            config = AppConfig(deeplink = deeplink)
+        )
     }
 
     override fun sceneDidBecomeActive(scene: UIScene) {

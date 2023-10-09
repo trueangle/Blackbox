@@ -1,6 +1,7 @@
 package com.github.trueangle.blackbox.sample.movie.shared
 
 import com.github.trueangle.blackbox.sample.movie.shared.ui.App
+import com.github.trueangle.blackbox.sample.movie.shared.ui.AppConfig
 import com.github.trueangle.blackbox.sample.movie.shared.ui.AppDependencies
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.darwin.Darwin
@@ -17,9 +18,9 @@ import moe.tlaster.precompose.PreComposeAppController
 import platform.Foundation.NSUserActivity
 
 @OptIn(BetaInteropApi::class)
-fun createMovieAppController(nsUserActivity: NSUserActivity?) =
+fun createMovieAppController(nsUserActivity: NSUserActivity?, config: AppConfig) =
     PreComposeAppController(nsUserActivity = nsUserActivity) {
-        App(AppDependencies(KtorClient()))
+        App(AppDependencies(KtorClient()), config)
     }
 
 @OptIn(ExperimentalSerializationApi::class)
