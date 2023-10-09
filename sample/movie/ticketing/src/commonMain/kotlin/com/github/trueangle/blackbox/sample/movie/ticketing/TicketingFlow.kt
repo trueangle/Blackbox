@@ -122,11 +122,11 @@ private fun NavigationContent(modifier: Modifier, scope: TicketingFlowScope, mov
         scene(route = FlowRoutes.Seats.RoutePattern) {
             Seats(
                 modifier = Modifier,
-                io = scope.seatsIO,
                 config = SeatsConfig(
                     cinema = requireNotNull(coordinator.flowState.selectedCinema),
                     showTime = requireNotNull(coordinator.flowState.selectedShowTime)
-                )
+                ),
+                io = scope.seatsIO
             )
         }
 

@@ -25,9 +25,9 @@ import com.github.trueangle.blackbox.sample.movie.shared.ui.featured.Featured
 import com.github.trueangle.blackbox.sample.movie.shared.ui.trending.Trending
 
 enum class HomeRoutes(val routePattern: String) {
-    Featured("featured"),
-    Trending("trending"),
-    Orders("orders")
+    Featured("movie://app/featured"),
+    Trending("movie://app/trending"),
+    Orders("movie://app/orders")
 }
 
 @Composable

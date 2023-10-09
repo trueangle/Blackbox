@@ -35,11 +35,11 @@ internal class HomeCoordinator(
     fun onBottomNavActionClick(clickedTabRoute: HomeRoutes) {
         when (clickedTabRoute) {
             HomeRoutes.Featured -> navigator.navigateTo(
-                HomeRoutes.Featured.routePattern,
-                RouteOptions(
+                route = HomeRoutes.Featured.routePattern,
+                routeOptions = RouteOptions(
                     popUpTo = RouteOptions.PopUpTo(
-                        inclusive = true,
-                        route = HomeRoutes.Featured.routePattern
+                        route = HomeRoutes.Featured.routePattern,
+                        inclusive = true
                     )
                 )
             )
