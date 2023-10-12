@@ -7,6 +7,7 @@ import com.github.trueangle.blackbox.sample.movie.shared.ui.featured.FeaturedIO
 import com.github.trueangle.blackbox.sample.movie.shared.ui.trending.TrendingDependencies
 import com.github.trueangle.blackbox.sample.movie.shared.ui.trending.TrendingIO
 import com.github.trueangle.blackbox.core.IO
+import com.github.trueangle.blackbox.multiplatform.Coordinator
 import com.github.trueangle.blackbox.multiplatform.FlowScope
 import com.github.trueangle.blackbox.sample.movie.shared.domain.model.Movie
 import com.github.trueangle.blackbox.sample.movie.shared.domain.repository.GenreRepository
@@ -33,7 +34,10 @@ sealed interface HomeOutput {
 
 class HomeIO : IO<HomeInput, HomeOutput>()
 
-internal class HomeScope(homeDependencies: HomeDependencies, homeIO: HomeIO) : FlowScope() {
+internal class HomeScope(
+    homeDependencies: HomeDependencies,
+    homeIO: HomeIO
+) : FlowScope() {
 
     val featuredIO by lazy { FeaturedIO() }
     val trendingIO by lazy { TrendingIO() }
@@ -50,9 +54,5 @@ internal class HomeScope(homeDependencies: HomeDependencies, homeIO: HomeIO) : F
 
     val ticketingFactory = homeDependencies.ticketingFactory
 
-    init {
-        coordinator {
-            HomeCoordinator(homeIO, featuredIO, trendingIO)
-        }
-    }
+    override val coordinator by lazy { HomeCoordinator(homeIO, featuredIO, trendingIO) }
 }

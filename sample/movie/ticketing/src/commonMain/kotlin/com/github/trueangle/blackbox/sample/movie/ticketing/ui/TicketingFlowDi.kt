@@ -1,6 +1,7 @@
 package com.github.trueangle.blackbox.sample.movie.ticketing.ui
 
 import androidx.compose.runtime.Immutable
+import com.github.trueangle.blackbox.multiplatform.Coordinator
 import com.github.trueangle.blackbox.multiplatform.FlowScope
 import com.github.trueangle.blackbox.sample.movie.ticketing.TicketingFlowIO
 import com.github.trueangle.blackbox.sample.movie.ticketing.domain.repository.OrderRepository
@@ -26,15 +27,13 @@ internal class TicketingFlowScope(
         TicketSummaryDependencies(orderRepository = dependencies.orderRepository)
     }
 
-    init {
-        coordinator {
-            TicketingFlowCoordinator(
-                movieName = config.movieName,
-                flowIO = io,
-                cinemaListIO = cinemaListIO,
-                seatsIO = seatsIO,
-                ticketSummaryIO = ticketSummaryIO
-            )
-        }
+    override val coordinator by lazy {
+        TicketingFlowCoordinator(
+            movieName = config.movieName,
+            flowIO = io,
+            cinemaListIO = cinemaListIO,
+            seatsIO = seatsIO,
+            ticketSummaryIO = ticketSummaryIO
+        )
     }
 }

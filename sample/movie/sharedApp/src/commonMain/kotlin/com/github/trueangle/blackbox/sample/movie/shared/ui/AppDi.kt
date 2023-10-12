@@ -1,6 +1,7 @@
 package com.github.trueangle.blackbox.sample.movie.shared.ui
 
 import androidx.compose.runtime.Immutable
+import com.github.trueangle.blackbox.multiplatform.Coordinator
 import com.github.trueangle.blackbox.sample.movie.shared.ui.detail.MovieDetailsDependencies
 import com.github.trueangle.blackbox.sample.movie.shared.ui.home.HomeDependencies
 import com.github.trueangle.blackbox.sample.movie.shared.ui.home.HomeIO
@@ -46,7 +47,5 @@ internal class AppScope(appDependencies: AppDependencies, config: AppConfig) : F
 
     val ticketingFactory by lazy { TicketingFactory(TicketingDependencies(httpClient = appDependencies.httpClient)) }
 
-    init {
-        coordinator { AppCoordinator(homeIO, ticketingFlowIO, authIO, movieDetailsIO, config) }
-    }
+    override val coordinator by lazy { AppCoordinator(homeIO, ticketingFlowIO, authIO, movieDetailsIO, config) }
 }

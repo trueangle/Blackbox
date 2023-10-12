@@ -10,14 +10,10 @@ import kotlinx.coroutines.cancel
 import moe.tlaster.precompose.stateholder.LocalStateHolder
 import kotlin.reflect.KClass
 
-open class FlowScope : ViewScope() {
+abstract class FlowScope : ViewScope() {
     private var _coordinator: Coordinator? = null
 
-    val coordinator get() = requireNotNull(_coordinator)
-
-    fun coordinator(creator: () -> Coordinator) {
-        _coordinator = creator()
-    }
+    abstract val coordinator: Coordinator
 
     override fun onDestroy() {
         _coordinator?.onDestroy()
@@ -52,7 +48,7 @@ inline fun <reified T : Coordinator> rememberCoordinator(
     }
 
     return rememberScope(key = scopeKey) {
-        FlowScope().apply { coordinator { creator() } }
+        CoordinatorScope(coordinator = creator())
     }.coordinator as T
 }
 
@@ -76,3 +72,6 @@ inline fun <reified T : ViewModel> rememberViewModel(
 // https://github.com/JetBrains/compose-multiplatform/issues/3147
 @PublishedApi
 internal inline fun <reified T : Any> getKClassForGenericType(): KClass<T> = T::class
+
+@PublishedApi
+internal class CoordinatorScope(override val coordinator: Coordinator) : FlowScope()

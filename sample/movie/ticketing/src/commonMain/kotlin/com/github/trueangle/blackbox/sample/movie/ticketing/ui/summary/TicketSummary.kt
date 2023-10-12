@@ -52,6 +52,7 @@ sealed interface TicketSummaryInput {
 
 class TicketSummaryIO : IO<TicketSummaryInput, TicketSummaryOutput>()
 
+@Immutable
 class TicketSummaryConfig(
     val movieName: String,
     val cinema: Cinema,
