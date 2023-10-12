@@ -1,9 +1,12 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    id("maven-publish")
+    id("convention.publication")
     id("org.jetbrains.compose")
 }
+
+group = "io.github.trueangle"
+version = "0.0.0"
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {

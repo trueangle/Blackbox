@@ -33,6 +33,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Blackbox"
+includeBuild("convention-plugins")
 include(":blackbox")
 include(":blackbox-android")
 include(":sample:movie:androidApp")
