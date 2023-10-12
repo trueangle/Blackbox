@@ -101,7 +101,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.github.trueangle.blackbox.sample.movie.shared"
+    namespace = "io.github.trueangle.blackbox.sample.movie.shared"
     compileSdk = 34
     defaultConfig {
         minSdk = 24

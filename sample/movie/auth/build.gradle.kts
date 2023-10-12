@@ -52,7 +52,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.github.trueangle.blackbox.sample.movie.auth"
+    namespace = "io.github.trueangle.blackbox.sample.movie.auth"
     compileSdk = 34
     defaultConfig {
         minSdk = 24

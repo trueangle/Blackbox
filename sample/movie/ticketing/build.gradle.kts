@@ -58,7 +58,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.github.trueangle.blackbox.sample.movie.ticketing"
+    namespace = "io.github.trueangle.blackbox.sample.movie.ticketing"
     compileSdk = 34
 
     defaultConfig {

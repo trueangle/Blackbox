@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.github.trueangle.blackbox.android"
+    namespace = "io.github.trueangle.blackbox.android"
     compileSdk = 34
 
     defaultConfig {

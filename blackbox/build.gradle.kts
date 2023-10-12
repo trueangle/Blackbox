@@ -76,7 +76,7 @@ kotlin {
 
 
 android {
-    namespace = "com.github.trueangle.blackbox"
+    namespace = "io.github.trueangle.blackbox"
     compileSdk = 34
     defaultConfig {
         minSdk = 24

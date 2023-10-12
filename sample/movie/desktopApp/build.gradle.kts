@@ -22,11 +22,11 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "com.github.trueangle.blackbox.sample.movie.desktop.MainKt"
+        mainClass = "io.github.trueangle.blackbox.sample.movie.desktop.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.github.trueangle.blackbox.sample.movie.desktop"
+            packageName = "io.github.trueangle.blackbox.sample.movie.desktop"
             packageVersion = "1.0.0"
         }
     }

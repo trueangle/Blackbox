@@ -509,7 +509,7 @@
 					"-framework",
 					sharedApp,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.github.truangle.blackbox.sample.movie.iosMovieApp;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.truangle.blackbox.sample.movie.iosMovieApp;
 				PRODUCT_NAME = iosMovieApp;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -545,7 +545,7 @@
 					"-framework",
 					sharedApp,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.github.truangle.blackbox.sample.movie.iosMovieApp;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.truangle.blackbox.sample.movie.iosMovieApp;
 				PRODUCT_NAME = iosMovieApp;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -575,7 +575,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.7;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.github.truangle.blackbox.sample.movieapp.iosMovieApp;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.truangle.blackbox.sample.movieapp.iosMovieApp;
 				PRODUCT_NAME = iosMovieApp;
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -603,7 +603,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.7;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.github.truangle.blackbox.sample.movieapp.iosMovieApp;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.truangle.blackbox.sample.movieapp.iosMovieApp;
 				PRODUCT_NAME = iosMovieApp;
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;

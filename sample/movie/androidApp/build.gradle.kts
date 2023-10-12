@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.github.trueangle.blackbox.sample.movie"
+    namespace = "io.github.trueangle.blackbox.sample.movie"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.github.trueangle.blackbox.sample.movie"
+        applicationId = "io.github.trueangle.blackbox.sample.movie"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
