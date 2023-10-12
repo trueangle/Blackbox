@@ -28,11 +28,6 @@ kotlin {
     }
 
     sourceSets {
-        val ktorVersion = "2.3.3"
-        val mediaKamelVersion = "0.7.2"
-        val immutableCollectionsVersion = "0.3.5"
-        val kmpPalette = "2.0.1"
-
         val commonMain by getting {
             dependencies {
                 implementation(compose.runtime)
@@ -47,23 +42,22 @@ kotlin {
                 implementation(project(":sample:movie:auth"))
                 implementation(project(":sample:movie:ticketing"))
 
-                implementation("media.kamel:kamel-image:$mediaKamelVersion")
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-                implementation("io.ktor:ktor-client-logging:$ktorVersion")
+                implementation(libs.kamel)
+                implementation(libs.jetbrains.ktor)
+                implementation(libs.jetbrains.ktor.client.contentNegotiation)
+                implementation(libs.jetbrains.ktor.client.loggging)
+                implementation(libs.jetbrains.ktor.serializationKotlinxJson)
 
-                implementation("com.kmpalette:kmpalette-core:$kmpPalette")
-                implementation("com.kmpalette:extensions-network:$kmpPalette")
+                implementation(libs.kmpalette.core)
+                implementation(libs.kmpalette.extensionsNetwork)
 
-                api("org.jetbrains.kotlinx:kotlinx-collections-immutable:$immutableCollectionsVersion")
-
+                api(libs.jetbrains.immutableCollections)
             }
         }
 
         val androidMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                implementation(libs.jetbrains.ktor.client.okhttp)
                 implementation(compose.uiTooling)
                 implementation(compose.preview)
             }
@@ -72,7 +66,7 @@ kotlin {
         val iosMain by getting {
             dependsOn(commonMain)
             dependencies {
-                implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+                implementation(libs.jetbrains.ktor.client.darwin)
             }
         }
         val iosX64Main by getting {
@@ -94,7 +88,7 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.common)
-                implementation("io.ktor:ktor-client-java:$ktorVersion")
+                implementation(libs.jetbrains.ktor.client.java)
             }
         }
     }

@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.github.trueangle"
-version = "0.0.0"
+version = libs.versions.blackbox
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
@@ -30,8 +30,6 @@ kotlin {
     }
 
     sourceSets {
-        val precomposeVersion = "1.5.5-SNAPSHOT"
-        val coroutinesVersion = "1.7.3"
         val commonMain by getting {
             dependencies {
                 implementation(compose.runtime)
@@ -41,9 +39,8 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.animation)
 
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-                api("moe.tlaster:precompose:$precomposeVersion")
-                api("moe.tlaster:precompose-viewmodel:$precomposeVersion")
+                implementation(libs.jetbrains.coroutines.core)
+                api(libs.precompose)
             }
         }
 

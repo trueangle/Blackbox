@@ -10,7 +10,7 @@ plugins {
 kotlin {
     targetHierarchy.default()
 
-    androidTarget ()
+    androidTarget()
     jvm("desktop")
 
     val xcf = XCFramework()
@@ -26,9 +26,6 @@ kotlin {
     }
 
     sourceSets {
-        val ktorVersion = "2.3.3"
-        val immutableCollectionsVersion = "0.3.5"
-
         val commonMain by getting {
             dependencies {
                 implementation(compose.runtime)
@@ -39,8 +36,8 @@ kotlin {
                 implementation(project(":sample:movie:design"))
                 implementation(project(":blackbox"))
 
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:$immutableCollectionsVersion")
+                implementation(libs.jetbrains.ktor)
+                implementation(libs.jetbrains.immutableCollections)
             }
         }
         val commonTest by getting {

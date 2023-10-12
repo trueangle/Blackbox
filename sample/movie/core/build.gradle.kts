@@ -26,12 +26,10 @@ kotlin {
     }
 
     sourceSets {
-        val immutableCollectionsVersion = "0.3.5"
-
         val commonMain by getting {
             dependencies {
                 implementation(compose.runtime)
-                implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:$immutableCollectionsVersion")
+                implementation(libs.jetbrains.immutableCollections)
             }
         }
         val commonTest by getting {

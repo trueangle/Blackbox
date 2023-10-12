@@ -44,12 +44,12 @@ fun TopAppBar(
 }
 
 @Composable
-inline fun MainButton(
+fun MainButton(
     modifier: Modifier = Modifier,
     text: String,
     enabled: Boolean = true,
     progress: Boolean = false,
-    noinline onClick: () -> Unit
+    onClick: () -> Unit
 ) {
     Button(
         modifier = modifier,

@@ -22,7 +22,6 @@ internal class TicketingFlowScope(
     val cinemaListIO by lazy { CinemaListIO() }
     val seatsIO by lazy { SeatsIO() }
     val ticketSummaryIO by lazy { TicketSummaryIO() }
-
     val ticketSummaryDependencies by lazy {
         TicketSummaryDependencies(orderRepository = dependencies.orderRepository)
     }

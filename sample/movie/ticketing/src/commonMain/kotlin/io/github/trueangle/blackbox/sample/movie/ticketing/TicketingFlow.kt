@@ -64,10 +64,9 @@ internal fun TicketingFlow(
     io: TicketingFlowIO,
     config: TicketingConfig
 ) {
-    val scope =
-        rememberScope { TicketingFlowScope(config, dependencies, io) }
+    val scope = rememberScope { TicketingFlowScope(config, dependencies, io) }
 
-    val coordinator = scope.coordinator as TicketingFlowCoordinator
+    val coordinator = scope.coordinator
     val currentRoute by scope.coordinator.currentRoute.collectAsState()
 
     val stepIndex by remember {
@@ -106,7 +105,7 @@ private val FLOW_STEPS = listOf(
 
 @Composable
 private fun NavigationContent(modifier: Modifier, scope: TicketingFlowScope, movieName: String) {
-    val coordinator = scope.coordinator as TicketingFlowCoordinator
+    val coordinator = scope.coordinator
 
     NavigationFlow(
         modifier = modifier.supportWideScreen(),

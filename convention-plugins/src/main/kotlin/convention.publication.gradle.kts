@@ -92,6 +92,12 @@ publishing {
     }
 }
 
+// https://youtrack.jetbrains.com/issue/KT-46466
+tasks.withType<AbstractPublishToMaven>().configureEach {
+    val signingTasks = tasks.withType<Sign>()
+    mustRunAfter(signingTasks)
+}
+
 signing {
     sign(publishing.publications)
 }
