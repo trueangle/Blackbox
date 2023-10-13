@@ -21,6 +21,29 @@ import platform.UIKit.UIWindowSceneDelegateProtocol
 import platform.UIKit.UIWindowSceneDelegateProtocolMeta
 import platform.UIKit.userActivity
 
+/**
+ * Kotlin implementation of Scene delegate class that supports
+ * app state preservation via NSUserActivity.
+ *
+ * Example of usage the class in swift code:
+ * @UIApplicationMain
+ * class AppDelegate: UIResponder, UIApplicationDelegate {
+ *
+ *     var window: UIWindow?
+ *
+ *     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+ *
+ *         if connectingSceneSession.role == UISceneSession.Role.windowApplication {
+ *              let config = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
+ *              config.delegateClass = MovieAppSceneDelegateKt.Self()
+ *              return config
+ *          }
+ *
+ *         fatalError("Unhandled scene role \(connectingSceneSession.role)")
+ *     }
+ * }
+ *
+ */
 @OptIn(ExperimentalForeignApi::class)
 @BetaInteropApi
 @ExportObjCClass

@@ -1,6 +1,6 @@
 [versions]
 #project
-blackbox = "0.0.1"
+blackbox = "0.0.2"
 precompose = "1.5.5"
 
 jetbrains-compose = "1.5.3"
