@@ -23,7 +23,7 @@ import platform.UIKit.userActivity
 
 /**
  * Kotlin implementation of Scene delegate class that supports
- * app state preservation via NSUserActivity.
+ * navigation state preservation via NSUserActivity.
  *
  * Example of usage the class in swift code:
  * @UIApplicationMain
