@@ -4,6 +4,15 @@ A lightweight framework that includes a set of architecture tools and approaches
 
 <br/>
 
+## Motivation
+The primary objective of the framework is to ensure scalability of the project, providing high reusability of code hierarchies by decoupling them from each other. This can be especially beneficial for a large projects to support parallel development by different teams. For small projects or MVP’s, the framework provides tools, facilitating rapid development by enabling such projects to be scale-ready right from the start.
+This is achieved by breaking the application logic up into separate independent parts called black-boxes. Each black-box has a simple and strictly defined interface that hides the implementation from external context. Each black-box can be seen as a sub-application that may be used separately from the context of the app.
+
+
+To learn more about concepts, [refer to Concept wiki page.](https://github.com/trueangle/Blackbox/wiki/Concept)
+
+
+
 ## What benefits Blackbox aims to deliver?
 
 1. Scalability by breaking an application down into independent components (aka **black-boxes**) with a simple interface that hides implementation details from the outer context. 
@@ -34,6 +43,7 @@ A lightweight framework that includes a set of architecture tools and approaches
 
 
 ## Sample app
+To get familiar with the concept it is encouraged to referer to [sample/MovieApp](https://github.com/trueangle/Blackbox/tree/master/sample). The app contains typical use-cases implemented with respect to [Blackbox principles](https://github.com/trueangle/Blackbox/wiki/Concept). Such as: project modularisation, feature decoupling, complex navigation scenarios, complex Compose Multiplatform views and many more.
 
 
 ## Support project
