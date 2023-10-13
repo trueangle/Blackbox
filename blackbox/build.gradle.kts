@@ -6,14 +6,14 @@ plugins {
 }
 
 group = "io.github.trueangle"
-version = libs.versions.blackbox
+version = "0.0.1"
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     targetHierarchy.default()
 
     androidTarget {
-        publishLibraryVariants("release")
+        publishLibraryVariants("release","debug")
     }
 
     jvm("desktop")
