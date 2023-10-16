@@ -1,6 +1,6 @@
 ## What is Blackbox?
 
-A lightweight framework that includes a set of architecture tools and approaches for building scalable, fully multiplatform applications (iOS, Android, Desktop, Web) by leveraging Compose Multiplatform.
+A lightweight framework that includes a set of architecture tools and approaches for building scalable, fully multiplatform applications (iOS, Android, Desktop) by leveraging Compose Multiplatform.
 
 ## Motivation
 The primary objective of the framework is to ensure scalability of the project, providing high reusability of code hierarchies by decoupling them from each other. This can be especially beneficial for a large projects to support parallel development by different teams. For small projects or MVP’s, the framework provides tools, facilitating rapid development by enabling such projects to be scale-ready right from the start.
@@ -44,6 +44,6 @@ To learn more about concepts, [refer to wiki documentation.](https://github.com/
 
 
 ## Sample app
-To get familiar with the concept it is encouraged to referer to [sample/MovieApp](https://github.com/trueangle/Blackbox/tree/master/sample). The app contains typical use-cases implemented with respect to [Blackbox principles](https://github.com/trueangle/Blackbox/wiki/Concept). Such as: project modularisation, feature decoupling, complex navigation scenarios, complex Compose Multiplatform views and many more.
+To get familiar with the concept it is encouraged to referer to [sample/Movie](https://github.com/trueangle/Blackbox/tree/master/sample). The app contains typical use-cases implemented with respect to [Blackbox principles](https://github.com/trueangle/Blackbox/wiki/Concept). Such as: project modularisation, feature decoupling, complex navigation scenarios, complex Compose Multiplatform views and many more.
 
 
