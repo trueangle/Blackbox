@@ -1,3 +1,5 @@
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.trueangle/blackbox/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.trueangle/blackbox/badge.svg)
+
 ## What is Blackbox?
 
 A lightweight framework that includes a set of architecture tools and approaches for building scalable, fully multiplatform applications (iOS, Android, Desktop) by leveraging Compose Multiplatform.
