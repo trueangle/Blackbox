@@ -1,6 +1,8 @@
 package io.github.trueangle.blackbox.sample.movie.shared.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
@@ -79,7 +81,9 @@ fun App(appDependencies: AppDependencies, config: AppConfig) {
 
             dialog(route = AppRoutes.Ticketing.Flow.RoutePattern) { entry ->
                 appScope.ticketingFactory.CreateTicketingFlow(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background),
                     io = appScope.ticketingFlowIO,
                     config = TicketingConfig(
                         movieName = requireNotNull(entry.path<String>("movieName"))
@@ -89,7 +93,9 @@ fun App(appDependencies: AppDependencies, config: AppConfig) {
 
             dialog(route = AppRoutes.AuthFlow.RoutePattern) {
                 AuthFlow(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background),
                     io = appScope.authIO
                 )
             }

@@ -52,7 +52,9 @@ class FeaturedDependencies(
 )
 
 sealed interface FeaturedOutput {
-    data class OnMovieClick(val movie: Movie, val dominantColors: Pair<Color, Color>) : FeaturedOutput
+    data class OnMovieClick(val movie: Movie, val dominantColors: Pair<Color, Color>) :
+        FeaturedOutput
+
     data class OnBuyTicketClick(val movie: Movie) : FeaturedOutput
 }
 
@@ -138,13 +140,16 @@ fun Featured(
 
     Scaffold(
         modifier = modifier
-            .nestedScroll(scrollBehavior.nestedScrollConnection)
+            //.nestedScroll(scrollBehavior.nestedScrollConnection)
             .fillMaxSize(),
         topBar = { TopAppBar("Now Showing", scrollBehavior) }
     ) {
         if (state.movies.isNotEmpty()) {
             Column(
-                modifier = modifier.padding(it).fillMaxSize().verticalScroll(rememberScrollState()),
+                modifier = modifier
+                    .padding(it)
+                    .fillMaxSize()
+                    /*.verticalScroll(rememberScrollState())*/,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Spacer(Modifier.height(16.dp))
