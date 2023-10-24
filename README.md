@@ -51,10 +51,11 @@ To get familiar with the concept it is encouraged to referer to [sample/Movie](h
 ## Component glossary.
 1. **[View](https://github.com/trueangle/Blackbox/wiki/View-and-its-Scope#view).** An abstract user interface component, that may represent a screen or a part of it.
 2. **[Scope](https://github.com/trueangle/Blackbox/wiki/View-and-its-Scope#scope).** Lifecycle aware container that is used for creating, keeping and disposing black-box function DI graph. 
-3. **[Config](https://github.com/trueangle/Blackbox/wiki/View-and-its-Scope#scope).** A set of parameters or arguments that are used to configure the black-box during initialisation.
-4. **[Dependencies](https://github.com/trueangle/Blackbox/wiki/View-and-its-Scope#scope).** A set of external dependencies that are used by black-box function to operate. 
-5. **[IO](https://github.com/trueangle/Blackbox/wiki/View-and-its-Scope#scope).** Reactive Input/Output used for exchanging events between black-boxes.
+3. **[Config](https://github.com/trueangle/Blackbox/wiki/View-and-its-Scope#view).** A set of parameters or arguments that are used to configure the black-box during initialisation.
+4. **[Dependencies](https://github.com/trueangle/Blackbox/wiki/View-and-its-Scope#view).** A set of external dependencies that are used by black-box function to operate. 
+5. **[IO](https://github.com/trueangle/Blackbox/wiki/View-and-its-Scope#view).** Reactive Input/Output used for exchanging events between black-boxes.
 6. **[NavigationFlow](https://github.com/trueangle/Blackbox/wiki/Navigation)**: A component used to describe declarative navigation between black boxes.
 7. **[Coordinator](https://github.com/trueangle/Blackbox/wiki/Navigation#describe-navigation-logic).** A component that encapsulates navigation logic by taking navigation details out of black-box functions, making them context-independent.
+
 
 
