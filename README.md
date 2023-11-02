@@ -2,7 +2,7 @@
 
 ## What is Blackbox?
 
-A lightweight framework that includes a set of architecture tools and approaches for building scalable, fully multiplatform applications (iOS, Android, Desktop) by leveraging Compose Multiplatform.
+A lightweight UI framework that includes a set of architecture tools and approaches for building scalable, fully multiplatform applications (iOS, Android, Desktop) by leveraging Compose Multiplatform.
 
 ## Motivation
 The primary objective of the framework is to ensure scalability of the project, providing high reusability of code hierarchies by decoupling them from each other. This can be especially beneficial for a large projects to support parallel development by different teams. For small projects or MVP’s, the framework provides tools, facilitating rapid development by enabling such projects to be scale-ready right from the start.
