@@ -5,7 +5,7 @@
 A lightweight UI framework that includes a set of architecture tools and approaches for building scalable, fully multiplatform applications (iOS, Android, Desktop) by leveraging Compose Multiplatform.
 
 ## Motivation
-The primary objective of the framework is to ensure scalability of the project, providing high reusability of code hierarchies by decoupling them from each other. This can be especially beneficial for a large projects to support parallel development by different teams. For small projects or MVP’s, the framework provides tools, facilitating rapid development by enabling such projects to be scale-ready right from the start.
+The primary objective of the framework is to ensure scalability of the project, providing high reusability of code hierarchies by decoupling them from each other. This can be especially beneficial for large projects that support parallel development by different teams. For small projects or MVP’s, the framework provides tools, facilitating rapid development by enabling such projects to be scale-ready right from the start.
 <br/>
 
 This is achieved by breaking the application logic down into separate independent parts called black-boxes. Each black-box has a simple and strictly defined interface that hides the implementation from external context. Each black-box can be seen as a sub-application that may be used separately from the app context.
