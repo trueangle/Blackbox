@@ -97,18 +97,9 @@ class MovieAppSceneDelegate : UIResponder, UIWindowSceneDelegateProtocol {
         )
     }
 
-    override fun sceneDidBecomeActive(scene: UIScene) {
-        (window?.rootViewController as? PreComposeAppController)?.didBecomeActive()
-    }
-
     override fun sceneWillResignActive(scene: UIScene) {
         val controller = (window?.rootViewController as? PreComposeAppController)
         scene.userActivity = controller?.willBecomeInactive()
-    }
-
-    override fun sceneDidDisconnect(scene: UIScene) {
-        val controller = (window?.rootViewController as? PreComposeAppController)
-        controller?.didBecomeDestroyed()
     }
 
     override fun stateRestorationActivityForScene(scene: UIScene): NSUserActivity? =

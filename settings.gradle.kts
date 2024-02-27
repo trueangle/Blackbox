@@ -3,12 +3,13 @@ pluginManagement {
         google()
         gradlePluginPortal()
         mavenCentral()
+        mavenLocal()
     }
 
     plugins {
-        val kotlinVersion = "1.9.10"
+        val kotlinVersion = "1.9.21"
         val agpVersion = "8.1.1"
-        val composeVersion = "1.5.3"
+        val composeVersion = "1.5.11"
         val serialization = "1.9.10"
 
         kotlin("jvm").version(kotlinVersion)

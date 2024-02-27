@@ -18,6 +18,6 @@ inline fun NavigationFlow(
         navigator = coordinator.precomposeNavigator,
         initialRoute = startDestination,
         builder = builder,
-        persistNavState = persistNavState
+        //persistNavState = persistNavState
     )
 }

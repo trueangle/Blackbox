@@ -36,7 +36,7 @@ internal fun Home(modifier: Modifier, dependencies: HomeDependencies, homeIO: Ho
 
     Scaffold(
         modifier = modifier,
-        bottomBar = { HomeBottomBar(homeScope.coordinator as HomeCoordinator) }
+        bottomBar = { HomeBottomBar(homeScope.coordinator) }
     ) {
         NavigationFlow(
             modifier = Modifier
