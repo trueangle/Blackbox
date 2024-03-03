@@ -7,6 +7,7 @@ import io.github.trueangle.blackbox.sample.movie.shared.ui.AppDependencies
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.ANDROID
+import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
@@ -22,7 +23,7 @@ private fun KtorClient() = HttpClient {
     expectSuccess = true
 
     install(Logging) {
-        logger = Logger.ANDROID
+        logger = Logger.DEFAULT
         level = LogLevel.BODY
     }
 

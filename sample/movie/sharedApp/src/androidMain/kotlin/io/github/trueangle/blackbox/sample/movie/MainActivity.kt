@@ -1,13 +1,12 @@
 package io.github.trueangle.blackbox.sample.movie
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.core.view.WindowCompat
-import io.github.trueangle.blackbox.sample.movie.shared.CreateMovieApp
+import androidx.activity.compose.setContent
 import io.github.trueangle.blackbox.sample.movie.shared.ui.AppConfig
-import moe.tlaster.precompose.lifecycle.PreComposeActivity
-import moe.tlaster.precompose.lifecycle.setContent
 
-class MainActivity : PreComposeActivity() {
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

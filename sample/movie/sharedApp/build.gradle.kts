@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     kotlin("multiplatform")
-    id("com.android.library")
+    id("com.android.application")
     id("org.jetbrains.compose")
     kotlin("plugin.serialization")
 }
@@ -33,6 +33,7 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
+
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
 
@@ -60,6 +61,22 @@ kotlin {
                 implementation(libs.jetbrains.ktor.client.okhttp)
                 implementation(compose.uiTooling)
                 implementation(compose.preview)
+                implementation(libs.androidx.activity.compose)
+
+                implementation(project(":blackbox"))
+
+                implementation(libs.androidx.coreKtx)
+                implementation(libs.androidx.appcompat)
+                implementation(libs.android.material)
+                implementation(libs.androidx.compose.ui)
+                implementation(libs.androidx.compose.ui.tooling)
+                implementation(libs.androidx.compose.ui.tooling.preview)
+                implementation(libs.androidx.compose.foundation)
+
+                implementation(libs.androidx.compose.material3)
+                implementation(libs.androidx.compose.material3.windowSizeClass)
+
+                //testImplementation(libs.junit)
             }
         }
 
@@ -95,10 +112,39 @@ kotlin {
 }
 
 android {
-    namespace = "io.github.trueangle.blackbox.sample.movie.shared"
+    namespace = "io.github.trueangle.blackbox.sample.movie"
     compileSdk = 34
+
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    sourceSets["main"].res.srcDirs("src/androidMain/res")
+    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
+
     defaultConfig {
+        applicationId = "io.github.trueangle.blackbox.sample.movie"
         minSdk = 24
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.10"
+    }
+
+    buildFeatures {
+        compose = true
     }
 
     compileOptions {
