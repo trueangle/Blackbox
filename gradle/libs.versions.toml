@@ -1,6 +1,6 @@
 [versions]
 #project
-precompose = "1.6.0-rc05-SNAPSHOT"
+precompose = "1.6.0-rc05"
 
 jetbrains-immutableCollections = "0.3.5"
 jetbrains-ktor = "2.3.4"
@@ -19,8 +19,7 @@ kamel = "0.7.2"
 kmpalette = "2.0.1"
 
 [libraries]
-#precompose = { group = "io.github.trueangle", name = "precompose", version.ref = "precompose" }
-precompose = { group = "moe.tlaster", name = "precompose", version.ref = "precompose" }
+precompose = { group = "io.github.trueangle", name = "precompose", version.ref = "precompose" }
 
 jetbrains-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 jetbrains-immutableCollections = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "jetbrains-immutableCollections" }
