@@ -10,14 +10,12 @@ inline fun NavigationFlow(
     modifier: Modifier,
     coordinator: Coordinator,
     startDestination: String,
-    persistNavState: Boolean = false,
     noinline builder: RouteBuilder.() -> Unit,
 ) {
     NavHost(
         modifier = modifier,
         navigator = coordinator.precomposeNavigator,
         initialRoute = startDestination,
-        builder = builder,
-        //persistNavState = persistNavState
+        builder = builder
     )
 }

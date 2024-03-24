@@ -110,8 +110,7 @@ private fun NavigationContent(modifier: Modifier, scope: TicketingFlowScope, mov
     NavigationFlow(
         modifier = modifier.supportWideScreen(),
         startDestination = FlowRoutes.CinemaList.RoutePattern,
-        coordinator = scope.coordinator,
-        persistNavState = false
+        coordinator = scope.coordinator
     ) {
 
         scene(route = FlowRoutes.CinemaList.RoutePattern) {

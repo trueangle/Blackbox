@@ -44,7 +44,6 @@ internal fun Home(modifier: Modifier, dependencies: HomeDependencies, homeIO: Ho
                 .fillMaxSize(),
             startDestination = HomeRoutes.Featured.routePattern,
             coordinator = homeScope.coordinator,
-            persistNavState = true
         ) {
             scene(route = HomeRoutes.Featured.routePattern) {
                 Featured(

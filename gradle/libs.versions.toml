@@ -1,16 +1,16 @@
 [versions]
 #project
-precompose = "1.6.0-beta01-SNAPSHOT"
+precompose = "1.6.0-rc05-SNAPSHOT"
 
 jetbrains-immutableCollections = "0.3.5"
 jetbrains-ktor = "2.3.4"
 
 coroutines = "1.8.0"
 android-material = "1.11.0"
-androidx-compose="1.6.2"
+androidx-compose="1.6.4"
 androidx-coreKtx = "1.12.0"
 androidx-appcompat = "1.6.1"
-androidx-compose-material = "1.2.0"
+androidx-compose-material = "1.2.1"
 
 activity-compose = "1.8.2"
 android-navigation-compose = "2.7.7"

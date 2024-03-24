@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.github.trueangle"
-version = "0.0.1"
+version = "0.1.0"
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
